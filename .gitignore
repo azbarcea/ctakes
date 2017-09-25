@@ -1,0 +1,10 @@
+target/
+
+# IntelliJ
+*.iml
+.idea
+
+# Weird files/folders
+
+/resources
+ctakes
