@@ -62,7 +62,7 @@ public class LvgCmdApiResourceImpl
     	try
     	{
     		
-	    	File configFile = new File(dr.getUri());
+	    	File configFile = new File(dr.getUrl().toExternalForm());
 	        configFileName = configFile.getPath();
 	         
 	        logger.info("Loading NLM Norm and Lvg with config file = " + configFileName);
