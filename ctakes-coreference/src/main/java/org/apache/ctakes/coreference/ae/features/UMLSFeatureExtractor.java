@@ -78,7 +78,7 @@ public class UMLSFeatureExtractor implements RelationFeaturesExtractor<Identifie
 		      feats.add(new Feature("Arg1Arg2BothCui", true));
 		    }
 		    
-		    if((ents1.size() == 0 & ents2.size() > 0) ||
+		    if((ents1.size() == 0 && ents2.size() > 0) ||
 		        (ents1.size() > 0 && ents2.size() == 0)){
 		      feats.add(new Feature("Arg1OrArg2NoCui", true));
 		    }

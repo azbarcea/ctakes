@@ -89,7 +89,7 @@ public class MentionClusterUMLSFeatureExtractor implements
         trueFeats.add("ClusterMentionBothCui");
       }
       
-      if((clusterEnts.size() == 0 & mentionEnts.size() > 0) ||
+      if((clusterEnts.size() == 0 && mentionEnts.size() > 0) ||
           (clusterEnts.size() > 0 && mentionEnts.size() == 0)){
         trueFeats.add("ClusterOrMentionNoCui");
       }
