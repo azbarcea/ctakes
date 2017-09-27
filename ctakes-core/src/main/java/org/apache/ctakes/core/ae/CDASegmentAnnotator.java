@@ -133,8 +133,16 @@ public class CDASegmentAnnotator extends JCasAnnotator_ImplBase {
 		return p;
 	}
 
+	private final Segment createSegment(JCas jCas, int begin, int end, String id) {
+		Segment segment = new Segment(jCas);
+		segment.setBegin(begin);
+		segment.setEnd(end);
+		segment.setId(id);
+		return segment;
+	}
+
 	@Override
-  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    public void process(JCas jCas) throws AnalysisEngineProcessException {
 		String text = jCas.getDocumentText();
 		if (text == null) {
 			String docId = DocumentIDAnnotationUtil.getDocumentID(jCas);
@@ -146,20 +154,13 @@ public class CDASegmentAnnotator extends JCasAnnotator_ImplBase {
 				// System.out.println("Pattern" + p);
 				Matcher m = p.matcher(text);
 				while (m.find()) {
-					Segment segment = new Segment(jCas);
-					segment.setBegin(m.start());
-					segment.setEnd(m.end());
-					segment.setId(id);					
+					Segment segment = createSegment(jCas, m.start(), m.end(), id);
 					sorted_segments.add(segment);
 				}
 			}
-			// If there are non segments, create a simple one that spans the
-			// entire doc
-			if (sorted_segments.size() <= 0) {
-				Segment header = new Segment(jCas);
-				header.setBegin(0);
-				header.setEnd(text.length());
-				header.setId(SIMPLE_SEGMENT);
+			// If there are non segments, create a simple one that spans the entire doc
+			if (sorted_segments.isEmpty()) {
+				Segment header = createSegment(jCas, 0, text.length(), SIMPLE_SEGMENT);
 				sorted_segments.add(header);
 			}			
 			// TODO: this is kinda redundant, but needed the sections in sorted
@@ -174,10 +175,6 @@ public class CDASegmentAnnotator extends JCasAnnotator_ImplBase {
 			for (Segment s : sorted_segments) {
 				int prevEnd = s.getEnd();
 				int nextBegin = text.length();
-				if (index > 0) {
-					// handle case for first section
-					sorted_segments.get(index - 1).getEnd();
-				}
 				if (index + 1 < sorted_segments.size()) {
 					// handle case for last section
 					nextBegin = sorted_segments.get(index + 1).getBegin();
@@ -185,23 +182,16 @@ public class CDASegmentAnnotator extends JCasAnnotator_ImplBase {
 				// Only create a segment if there is some text.
 				// Handle the case where it's an empty segement
 				if (nextBegin > prevEnd) {
-					Segment segment = new Segment(jCas);
-					segment.setBegin(prevEnd);
-					segment.setEnd(nextBegin);
-					segment.setId(s.getId());
+					Segment segment = createSegment(jCas, prevEnd, nextBegin, s.getId());
 					segment.addToIndexes();
-					segment.setPreferredText(section_names.get(s.getId()));					
-					index++;
+					segment.setPreferredText(section_names.get(s.getId()));
 				}
 				// handle case where there is only a single SIMPLE_SEGMENT
 				else if (nextBegin == prevEnd && nextBegin > 0 && index == 0) {
-					Segment segment = new Segment(jCas);
-					segment.setBegin(0);
-					segment.setEnd(nextBegin);
-					segment.setId(s.getId());
+					Segment segment = createSegment(jCas, 0, nextBegin, s.getId());
 					segment.addToIndexes();
-					index++;
 				}
+				index++;
 			}	
 		}
 	}
