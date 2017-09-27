@@ -18,7 +18,6 @@
  */
 package org.apache.ctakes.core.ae;
 
-import junit.framework.Assert;
 import org.apache.ctakes.typesystem.type.textspan.Segment;
 import org.apache.log4j.Logger;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
@@ -37,7 +36,6 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.util.cr.FilesCollectionReader;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
