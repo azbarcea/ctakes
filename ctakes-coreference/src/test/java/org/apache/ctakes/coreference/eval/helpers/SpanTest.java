@@ -18,27 +18,21 @@
  */
 package org.apache.ctakes.coreference.eval.helpers;
 
-public class Test {
+import org.junit.Test;
 
-	public static void main (String[] args) {
-//		Span[] s1 = new Span[7];
-//		Span[] s2 = new Span[6];
-//		s1[0] = new Span('A');
-//		s1[1] = new Span('C');
-//		s1[2] = new Span('G');
-//		s1[3] = new Span('G');
-//		s1[4] = new Span('T');
-//		s1[5] = new Span('A');
-//		s1[6] = new Span('G');
-//		
-//		s2[0] = new Span('C');
-//		s2[1] = new Span('C');
-//		s2[2] = new Span('T');
-//		s2[3] = new Span('A');
-//		s2[4] = new Span('A');
-//		s2[5] = new Span('G');
-//		SpanAlignment sa = new SpanAlignment(s1, s2);
-////////////////////////////////////////////////////////////////////////
+import org.apache.log4j.Logger;
+
+import java.util.StringJoiner;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+public class SpanTest {
+
+	private Logger log = Logger.getLogger(SpanTest.class);
+
+	@Test
+	public void testSpanCreation () {
 		Span[] s1 = new Span[4];
 		Span[] s2 = new Span[4];
 		int[] a = new int[2];
@@ -50,15 +44,11 @@ public class Test {
 		a[0] = 100; a[1] = 128; s2[1] = new Span(a);
 		a[0] = 110; a[1] = 128; s2[2] = new Span(a);
 		a[0] = 200; a[1] = 208; s2[3] = new Span(a);
+
 		SpanAlignment sa = new SpanAlignment (s1, s2);
 
-		int[] id = sa.get1();
-		for (int i : id)
-			System.out.print(i+" ");
-		System.out.println();
-		id = sa.get2();
-		for (int i : id)
-			System.out.print(i+" ");
-		System.out.println();
+		int[] id1 = sa.get1();
+		log.info( IntStream.of(sa.get1()).boxed().map(i -> i.toString()).collect(Collectors.joining(" ")) );
+		log.info( IntStream.of(sa.get2()).boxed().map(i -> i.toString()).collect(Collectors.joining(" ")) );
 	}
 }
