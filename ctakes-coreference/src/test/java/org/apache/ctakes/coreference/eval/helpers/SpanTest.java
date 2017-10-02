@@ -27,6 +27,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static org.junit.Assert.assertEquals;
+
 public class SpanTest {
 
 	private Logger log = Logger.getLogger(SpanTest.class);
@@ -48,7 +50,11 @@ public class SpanTest {
 		SpanAlignment sa = new SpanAlignment (s1, s2);
 
 		int[] id1 = sa.get1();
-		log.info( IntStream.of(sa.get1()).boxed().map(i -> i.toString()).collect(Collectors.joining(" ")) );
-		log.info( IntStream.of(sa.get2()).boxed().map(i -> i.toString()).collect(Collectors.joining(" ")) );
+		String line1 = IntStream.of(sa.get1()).boxed().map(i -> i.toString()).collect(Collectors.joining(" "));
+		assertEquals("1 2 3 4", line1);
+		log.info( line1 );
+		String line2 = IntStream.of(sa.get2()).boxed().map(i -> i.toString()).collect(Collectors.joining(" "));
+		assertEquals("1 2 3 5", line2);
+		log.info( line2 );
 	}
 }
