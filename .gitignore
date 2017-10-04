@@ -8,16 +8,16 @@ target/
 
 /resources
 ctakes
+
 # Eclipse
 
 .project
 .settings
 .classpath
 
-*.iml
-target
+# cTAKES generated files
+
 generatedoutput
 /resources/
 *.out
 *.patch
-.idea
