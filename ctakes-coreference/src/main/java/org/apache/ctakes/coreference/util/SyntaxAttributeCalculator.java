@@ -94,7 +94,7 @@ public class SyntaxAttributeCalculator extends PairAttributeCalculator {
 		ArrayList<String> feats = new ArrayList<String>();
 		Scanner scanner = null;
 		try{
-			scanner = new Scanner(FileLocator.locateFile(filename));
+			scanner = new Scanner(FileLocator.getFile(filename));
 		}catch(FileNotFoundException e){
 			// return empty feature list.
 			System.err.println("Exception reading filename: " + e.getMessage());

@@ -56,7 +56,7 @@ final public class FileUtil {
 //      final String formattedPath = parseDirText( filePath );
 //      final File file = new File( formattedPath );
       try {
-         final File file = FileLocator.locateFile( filePath );
+         final File file = FileLocator.getFile( filePath );
          if ( !file.canRead() ) {
             LOGGER.error( "Cannot read file " + filePath );
             System.exit( 1 );
@@ -74,7 +74,7 @@ final public class FileUtil {
 //      final String formattedPath = parseDirText( filePath );
 //      final File file = new File( formattedPath );
       try {
-         final File file = FileLocator.locateFile( filePath );
+         final File file = FileLocator.getFile( filePath );
          if ( file.getParentFile() != null && !file.getParentFile().isDirectory() ) {
             file.getParentFile().mkdirs();
          }
