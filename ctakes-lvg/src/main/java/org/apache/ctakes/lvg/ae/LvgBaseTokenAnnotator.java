@@ -131,10 +131,9 @@ public class LvgBaseTokenAnnotator extends JCasAnnotator_ImplBase {
 	 * Performs initialization logic. This implementation just reads values for
 	 * the configuration parameters.
 	 * 
-	 * @see org.apache.uima.analysis_engine.annotator.BaseAnnotator#initialize(AnnotatorContext)
+	 * @see org.apache.uima.analysis_component.JCasAnnotator_ImplBase#initialize(UimaContext)
 	 */
-	public void initialize(UimaContext aContext)
-			throws ResourceInitializationException {
+	public void initialize(UimaContext aContext) throws ResourceInitializationException {
 		super.initialize(aContext);
 
 		context = aContext;

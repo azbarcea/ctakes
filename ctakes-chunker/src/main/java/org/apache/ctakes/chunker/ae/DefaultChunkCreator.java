@@ -29,11 +29,11 @@ import org.apache.ctakes.typesystem.type.syntax.Chunk;
  * This chunker creator simply creates annotations of type edu.mayo.bmi.chunker.type.Chunk and
  * sets the chunkType feature of the annotation to the passed in parameter chunkType.  
  * @author Philip
- * @see org.apache.ctakes.typesystem.type.Chunk
+ * @see org.apache.ctakes.typesystem.type.syntax.Chunk
  */
 public class DefaultChunkCreator implements ChunkCreator {
 
-	public void initialize(UimaContext annotatorContext) throws ResourceInitializationException {
+	public void initialize(UimaContext uimaContext) throws ResourceInitializationException {
 	  /* no initialization necessary */
 	}
 

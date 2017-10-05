@@ -45,7 +45,7 @@ public abstract class NamedEntityContextAnalyzer implements ContextAnalyzer {
 
 	private Set<String> _boundaryWordSet;
 
-	public void initialize(UimaContext annotatorContext) throws ResourceInitializationException {
+	public void initialize(UimaContext uimaContext) throws ResourceInitializationException {
 		initBoundaryData();
 	}
 

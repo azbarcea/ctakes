@@ -55,11 +55,6 @@ public class NegationManualDepContextAnalyzer {
 		regexes = new NegationDepRegex();		
 	}
 	
-/*	public void initialize(UimaContext annotatorContext) throws ResourceInitializationException {
-		// Initialize all the regex that will be used
-
-	}
-*/
 	public boolean isBoundary(Annotation contextAnnotation, int scopeOrientation) throws AnalysisEngineProcessException {
 		String lcText = contextAnnotation.getCoveredText().toLowerCase();
 		return regexes._boundaryWordSet.contains(lcText);

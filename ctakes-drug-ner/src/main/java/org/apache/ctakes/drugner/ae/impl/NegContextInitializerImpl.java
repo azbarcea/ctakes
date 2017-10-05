@@ -126,16 +126,16 @@ public class NegContextInitializerImpl extends ContextAnalyzerAdapter
 	      return indexes.getAnnotationIndex(iAnnotationType).iterator();
 	}
 
-	public void initialize(UimaContext aContext)
+	public void initialize(UimaContext uimaContext)
 	throws ResourceInitializationException 
 	{
-	  super.initialize(aContext);
+	  super.initialize(uimaContext);
 	  try
 	  {
-	    Object val = aContext.getConfigParameterValue(PARAM_ANNOTATION_TYPE);
+	    Object val = uimaContext.getConfigParameterValue(PARAM_ANNOTATION_TYPE);
 	    iAnnotationType = JCasUtil.getType((String)val);
 	    
-	    String statusIndicatorFSMClass = (String) aContext.getConfigParameterValue(NEGATION_IND_FSM_CLASS);
+	    String statusIndicatorFSMClass = (String) uimaContext.getConfigParameterValue(NEGATION_IND_FSM_CLASS);
 	    iv_negIndicatorFSM = (FSM) Class.forName(statusIndicatorFSMClass).newInstance();
 	  }
 	  catch (Exception ace)

@@ -31,7 +31,8 @@ public class ContextAnalyzerAdapter implements ContextAnalyzer{
 		return null;
 	}
 
-	public void initialize(UimaContext annotatorContext) throws ResourceInitializationException {
+	public void initialize(UimaContext uimaContext) throws ResourceInitializationException {
+		// Default implementation
 	}
 
 	public boolean isBoundary(Annotation tokenAnnot, int scope) throws AnalysisEngineProcessException{

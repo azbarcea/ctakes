@@ -34,7 +34,7 @@ import org.apache.uima.resource.ResourceInitializationException;
  */
 public interface ChunkCreator {
 
-	public void initialize(UimaContext annotatorContext) throws ResourceInitializationException;
+	public void initialize(UimaContext uimaContext) throws ResourceInitializationException;
 
 	/**
 	 * 
