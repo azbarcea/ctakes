@@ -116,12 +116,6 @@ public enum JdbcConnectionFactory {
       } catch ( FileNotFoundException fnfE ) {
          throw new SQLException( "No Hsql DB exists at Url", fnfE );
       }
-//      try {
-//         final String fullPath = FileLocator.getFullPath( urlFilePath );
-//         return fullPath.substring( 0, fullPath.length() - HSQL_DB_EXT.length() );
-//      } catch ( FileNotFoundException fnfE ) {
-//         throw new SQLException( "No Hsql DB exists at Url", fnfE );
-//      }
    }
 
    static private class DotPlotter extends TimerTask {
