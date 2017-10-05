@@ -70,8 +70,8 @@ public class GramMatrixExporterImpl extends WekaBagOfWordsExporterImpl implement
 		return bagOfWordsExporter;
 	}
 
-	public void setBagOfWordsExporter(WekaBagOfWordsExporter bagOfWordsExporter) {
-		this.bagOfWordsExporter = bagOfWordsExporter;
+	public void setBagOfWordsExporter(BagOfWordsExporter bagOfWordsExporter) {
+		this.bagOfWordsExporter = (WekaBagOfWordsExporter)bagOfWordsExporter;
 	}
 
 	public void setKernelEvaluationDao(KernelEvaluationDao kernelEvaluationDao) {
