@@ -27,10 +27,6 @@ import org.apache.uima.jcas.JCas;
 /**
  * Defines how to consume the lookup hits produced by the LookupAnnotator.
  * 
- * NOTE: Constructor for implementation will be passed 2 arguments
- * 1.) AnnotatorContext for accessing external resources
- * 2.) Properties object for customization purposes.
- * 
  * @author Mayo Clinic
  */
 public interface LookupConsumer

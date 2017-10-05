@@ -44,7 +44,7 @@ import org.apache.uima.jcas.JCas;
 /**
  * Uses one or more finite state machines to detect dates in the given input of
  * tokens.
- * 
+ *
  * @author Mayo Clinic
  */
 public class NegationManualDepContextAnalyzer {
@@ -55,11 +55,6 @@ public class NegationManualDepContextAnalyzer {
 		regexes = new NegationDepRegex();		
 	}
 	
-/*	public void initialize(UimaContext annotatorContext) throws ResourceInitializationException {
-		// Initialize all the regex that will be used
-
-	}
-*/
 	public boolean isBoundary(Annotation contextAnnotation, int scopeOrientation) throws AnalysisEngineProcessException {
 		String lcText = contextAnnotation.getCoveredText().toLowerCase();
 		return regexes._boundaryWordSet.contains(lcText);
@@ -88,7 +83,7 @@ public class NegationManualDepContextAnalyzer {
 */	
 	/**
 	 * Executes the regular expressions on paths.
-	 * 
+	 *
 	 * @param nodes
 	 * @param focus
 	 * @return Set of DateToken objects.

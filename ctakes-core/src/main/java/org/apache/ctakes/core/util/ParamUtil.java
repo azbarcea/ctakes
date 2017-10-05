@@ -31,14 +31,14 @@ public class ParamUtil {
 	/**
 	 * 
 	 * @param parameterName
-	 * @param annotatorContext
+	 * @param uimaContext
 	 * @return does not return null - but will return empty set if parameter is
 	 *         optional or not set.
 	 * @throws AnnotatorContextException
 	 */
-	public static Set<String> getStringParameterValuesSet(String parameterName, UimaContext annotatorContext) {
+	public static Set<String> getStringParameterValuesSet(String parameterName, UimaContext uimaContext) {
 		Set<String> returnValues = new HashSet<>();
-		String[] strings = (String[]) annotatorContext.getConfigParameterValue(parameterName);
+		String[] strings = (String[]) uimaContext.getConfigParameterValue(parameterName);
 		if (strings == null)
 			return returnValues;
 
@@ -49,8 +49,8 @@ public class ParamUtil {
 	}
 
 	public static Map<String, String> getStringParameterValuesMap(String parameterName,
-			UimaContext annotatorContext, String keyValueDelimiter) {
-		String[] paramValues = (String[]) annotatorContext.getConfigParameterValue(parameterName);
+			UimaContext uimaContext, String keyValueDelimiter) {
+		String[] paramValues = (String[]) uimaContext.getConfigParameterValue(parameterName);
 		return getStringParameterValuesMap(paramValues, keyValueDelimiter);
 	}
 	

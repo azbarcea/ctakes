@@ -18,28 +18,20 @@
  */
 package org.apache.ctakes.sideeffect.ae;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-
 import libsvm.svm;
 import libsvm.svm_model;
 import libsvm.svm_node;
-
-import org.apache.uima.analysis_engine.ResultSpecification;
-import org.apache.uima.analysis_engine.annotator.AnnotatorConfigurationException;
-import org.apache.uima.analysis_engine.annotator.AnnotatorContext;
-import org.apache.uima.analysis_engine.annotator.AnnotatorInitializationException;
-import org.apache.uima.analysis_engine.annotator.AnnotatorProcessException;
-import org.apache.uima.analysis_engine.annotator.JTextAnnotator_ImplBase;
-import org.apache.uima.jcas.JFSIndexRepository;
-import org.apache.uima.jcas.JCas;
-
 import org.apache.ctakes.sideeffect.type.PSESentenceFeature;
 import org.apache.ctakes.sideeffect.type.SESentence;
 import org.apache.ctakes.sideeffect.type.SideEffectAnnotation;
+import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.JFSIndexRepository;
+import org.apache.uima.resource.ResourceInitializationException;
+
+import java.util.*;
 
 /**
  * Classify side effect sentences and add them to SESentence
@@ -47,12 +39,13 @@ import org.apache.ctakes.sideeffect.type.SideEffectAnnotation;
  *
  */
 
-public class SESentenceClassifierAnnotator extends JTextAnnotator_ImplBase {
+public class SESentenceClassifierAnnotator extends JCasAnnotator_ImplBase {
+
 	svm_model model; //trained libsvm model
+
 	Map<String, String> feaMap; //key:nominal values, values: converted value
 		
-	public void initialize(AnnotatorContext annotCtx)
-	throws AnnotatorInitializationException, AnnotatorConfigurationException
+	public void initialize(UimaContext annotCtx) throws ResourceInitializationException
 	{ 
 		super.initialize(annotCtx);
 		  		
@@ -77,10 +70,9 @@ public class SESentenceClassifierAnnotator extends JTextAnnotator_ImplBase {
 		feaMap.put("afp", "6"); // location feature
 		feaMap.put("any", "7"); // location feature
 	}
-	
-	public void process(JCas jcas, ResultSpecification resSpec)
-			throws AnnotatorProcessException {
-		JFSIndexRepository indexes = jcas.getJFSIndexRepository();
+
+	public void process(JCas aJCas) throws AnalysisEngineProcessException {
+		JFSIndexRepository indexes = aJCas.getJFSIndexRepository();
 		Iterator psfIter = indexes.getAnnotationIndex(PSESentenceFeature.type).iterator();	
 		Set<String> seSenSpans_ML = new HashSet<String>();
 		
@@ -128,7 +120,7 @@ public class SESentenceClassifierAnnotator extends JTextAnnotator_ImplBase {
 	    	String[] stk = s.split("\\|");
 	    	int begin = Integer.parseInt(stk[0]);
 	    	int end = Integer.parseInt(stk[1]);
-			SESentence ses = new SESentence(jcas);
+			SESentence ses = new SESentence(aJCas);
 			ses.setBegin(begin);
 			ses.setEnd(end);
 			ses.addToIndexes();
