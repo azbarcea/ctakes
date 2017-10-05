@@ -18,19 +18,20 @@
  */
 package org.apache.ctakes.core.resource;
 
-import java.io.File;
-
 import org.apache.log4j.Logger;
+import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.IOContext;
 import org.apache.lucene.store.RAMDirectory;
-
 import org.apache.uima.resource.DataResource;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.SharedResourceObject;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Oct 2010 - convert to lucene 3.0.2
@@ -40,9 +41,54 @@ public class LuceneIndexReaderResourceImpl
         implements LuceneIndexReaderResource, SharedResourceObject {
 	
     // LOG4J logger based on class name
-    private Logger iv_logger = Logger.getLogger(getClass().getName());
+    private Logger log = Logger.getLogger(LuceneIndexReaderResourceImpl.class);
 
-    private IndexReader iv_indexReader;
+    private IndexReader indexReader = null;
+
+    private final File getLuceneFile(final String path) throws ResourceInitializationException {
+	File file;
+	    try {
+		    file = FileLocator.getFile(path);
+	    } catch (IOException e) {
+		    log.error(String.format("Could not find Lucene file index directory for: %s", path));
+		    throw new ResourceInitializationException(e);
+	    }
+
+	    if (!file.exists()) {
+		    log.error(String.format("indexDir=%s does not exist!", path) );
+		    throw new ResourceInitializationException(
+				    new Exception(String.format("Couldn't find Lucense index folder: %s", path)));
+	    }
+		// file cannot be null
+	    return file;
+    }
+
+    private final Directory openLuceneFSDirectory(final File file) throws ResourceInitializationException {
+	try {
+			return FSDirectory.open(file);
+		} catch (IOException e) {
+			log.error(String.format("Could not open Lucene file index directory for: %s", file.getAbsolutePath()));
+			throw new ResourceInitializationException(e);
+		}
+    }
+
+    private final Directory openLuceneRAMDirectory(final Directory directory) {
+	log.info( String.format("Loading Lucene index into memory from: %s", directory) );
+		try {
+			return new RAMDirectory(directory, IOContext.DEFAULT);
+		} catch (IOException e) {
+			log.warn("Could not load Lucene index as memory directory. Will use original FileSystem lucene index", e);
+			return directory;
+		}
+    }
+
+    private final Directory getLuceneDirectory(final File file, Boolean useMemoryIndex) throws ResourceInitializationException {
+	Directory luceneDirectory = openLuceneFSDirectory(file);
+	if (useMemoryIndex.booleanValue()) {
+		luceneDirectory = openLuceneRAMDirectory(luceneDirectory);
+	}
+	return luceneDirectory;
+    }
 
     /**
      * Loads a Lucene index for reading.
@@ -53,35 +99,19 @@ public class LuceneIndexReaderResourceImpl
         Boolean useMemoryIndex = (Boolean) cps.getParameterValue("UseMemoryIndex");
 
         String indexDirStr = (String) cps.getParameterValue("IndexDirectory");
-        try {
 
-            File indexDir = FileLocator.locateFile(indexDirStr);
+	    Directory directory = getLuceneDirectory( getLuceneFile(indexDirStr), useMemoryIndex );
+	try {
+		    // TODO: when upgrade to Lucene 6.0, Directory implements Closeable. Use try-with-resource
+		indexReader = DirectoryReader.open( directory );
+			log.info(String.format("Loaded Lucene Index, # docs=%s", indexReader.numDocs()));
+		} catch (IOException e) {
+			log.error("Cannot traverse Lucene index directory", e);
+			indexReader = null;
+		}
+	}
 
-            if(!indexDir.exists())
-            	iv_logger.info("indexDir="+indexDirStr+"  does not exist!");
-            else
-            	iv_logger.info("indexDir="+indexDirStr+"  exists.");
-            
-            if (useMemoryIndex.booleanValue()) {
-
-                iv_logger.info("Loading Lucene Index into memory: " + indexDir);
-                FSDirectory fsd = FSDirectory.open(indexDir);
-                Directory d = new RAMDirectory(fsd, IOContext.DEFAULT);
-                iv_indexReader = IndexReader.open(d);
-            }
-            else {
-                iv_logger.info("Loading Lucene Index: " + indexDir);
-                FSDirectory fsd = FSDirectory.open(indexDir);
-                iv_indexReader = IndexReader.open(fsd);
-            }
-            iv_logger.info("Loaded Lucene Index, # docs=" + iv_indexReader.numDocs());
-        }
-        catch (Exception e) {
-        	throw new ResourceInitializationException(e);
-        }
-    }
-
-    public IndexReader getIndexReader() {
-        return iv_indexReader;
+    public final IndexReader getIndexReader() {
+        return indexReader;
     }
 }
