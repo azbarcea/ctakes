@@ -50,7 +50,7 @@ public class SvmVectorCreator {
 	public SvmVectorCreator(HashSet<String> stopwords){
 		this.stopwords = stopwords;
 		try{
-			wiki = new WikiIndex(NUM_WIKI_HITS, FileLocator.locateFile("org/apache/ctakes/coreference/models/index_med_5k").getAbsolutePath(), "text");
+			wiki = new WikiIndex(NUM_WIKI_HITS, FileLocator.getFile("org/apache/ctakes/coreference/models/index_med_5k").getAbsolutePath(), "text");
 			wiki.initialize();
 		}catch(IOException e){
 			e.printStackTrace();

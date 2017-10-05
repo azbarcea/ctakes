@@ -24,7 +24,7 @@ public class DependencyPathRegexpFeatureExtractor implements
   HashMap<String,Integer> patts = new HashMap<>();
   
   public DependencyPathRegexpFeatureExtractor() throws FileNotFoundException{
-    File pathFile = FileLocator.locateFile("org/apache/ctakes/assertion/models/uncDepPathRegexps.txt");
+    File pathFile = FileLocator.getFile("org/apache/ctakes/assertion/models/uncDepPathRegexps.txt");
     Scanner scanner = new Scanner(pathFile);
     while(scanner.hasNextLine()){
       String[] featAndWeight = scanner.nextLine().trim().split("\t");

@@ -64,11 +64,11 @@ public class KuRuleBasedClassifierAnnotator extends JCasAnnotator_ImplBase {
 			String smokingWordsFileName = (String) aContext
 					.getConfigParameterValue("SmokingWordsFile");
 
-			smokingWords = readLinesFromFile(FileLocator.locateFile(
+			smokingWords = readLinesFromFile(FileLocator.getFile(
 					smokingWordsFileName).getAbsolutePath());
 			String unknownWordsFileName = (String) aContext
 					.getConfigParameterValue("UnknownWordsFile");
-			unknownWords = readLinesFromFile(FileLocator.locateFile(
+			unknownWords = readLinesFromFile(FileLocator.getFile(
 					unknownWordsFileName).getAbsolutePath());
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);

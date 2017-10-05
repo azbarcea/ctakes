@@ -166,7 +166,7 @@ public class ODIEVectorFileWriter extends JCasAnnotator_ImplBase {
 			//			}
 			stopwords = new HashSet<String>();
 //			FileResource r = (FileResource) aContext.getResourceObject("stopWords");
-			File stopFile = FileLocator.locateFile(((String)aContext.getConfigParameterValue(PARAM_STOPS)));
+			File stopFile = FileLocator.getFile(((String)aContext.getConfigParameterValue(PARAM_STOPS)));
 			BufferedReader br = new BufferedReader(new FileReader(stopFile));
 			String l;
 			while ((l = br.readLine())!=null) {
@@ -182,7 +182,7 @@ public class ODIEVectorFileWriter extends JCasAnnotator_ImplBase {
 //			svm_model anaphModel = svm.svm_load_model(anaphModFile.getAbsolutePath());
 			vecCreator = new SvmVectorCreator(stopwords);
 //			r = (FileResource) aContext.getResourceObject("treeFrags");
-			File fragFile = FileLocator.locateFile(((String)aContext.getConfigParameterValue(PARAM_FRAGS)));
+			File fragFile = FileLocator.getFile(((String)aContext.getConfigParameterValue(PARAM_FRAGS)));
 			Scanner scanner = new Scanner(fragFile);
 			if(useFrags){
 				treeFrags = new ArrayList<String>();

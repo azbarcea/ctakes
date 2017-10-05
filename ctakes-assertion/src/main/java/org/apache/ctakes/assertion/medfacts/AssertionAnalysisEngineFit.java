@@ -84,12 +84,12 @@ public class AssertionAnalysisEngineFit extends JCasAnnotator_ImplBase {
       String posModelFilePath;
       File enabledFeaturesFile;
       try {
-         assertionModelFile = FileLocator.locateFile( _assertionModelPath );
+         assertionModelFile = FileLocator.getFile( _assertionModelPath );
          // assertionModelContents = StringHandling.readEntireContentsBinary(assertionModelFile);
          scopeModelFilePath = FileLocator.getFullPath( _scopeModelPath );
          cueModelFilePath = FileLocator.getFullPath( _cueModelPath );
          posModelFilePath = FileLocator.getFullPath( _posModelPath );
-         enabledFeaturesFile = FileLocator.locateFile( _enabledFeaturesPath );
+         enabledFeaturesFile = FileLocator.getFile( _enabledFeaturesPath );
       } catch ( FileNotFoundException fnfE ) {
          throw new ResourceInitializationException( fnfE );
       }
