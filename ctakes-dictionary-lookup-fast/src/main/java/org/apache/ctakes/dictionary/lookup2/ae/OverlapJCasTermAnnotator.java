@@ -18,6 +18,7 @@
  */
 package org.apache.ctakes.dictionary.lookup2.ae;
 
+import org.apache.ctakes.core.config.ConfigParameterConstants;
 import org.apache.ctakes.core.pipeline.PipeBitInfo;
 import org.apache.ctakes.core.util.collection.CollectionMap;
 import org.apache.ctakes.dictionary.lookup2.dictionary.RareWordDictionary;
@@ -217,20 +218,32 @@ final public class OverlapJCasTermAnnotator extends AbstractJCasTermAnnotator {
       return AnalysisEngineFactory.createEngineDescription( OverlapJCasTermAnnotator.class );
    }
 
+   // TODO: Ambiguous constructor for AnalysisEngineDescription named as AnnotatorDescription. Consider refactor
+   //
+   // TODO: Create UTest for deprecated JCasTermAnnotator.DICTIONARY_DESCRIPTOR_KEY
+   // Make sure deprecated JCasTermAnnotator.DICTIONARY_DESCRIPTOR_KEY was correctly replaced by
+   //   ConfigParameterConstants.PARAM_LOOKUP_XML
    static public AnalysisEngineDescription createAnnotatorDescription( final String descriptorPath )
          throws ResourceInitializationException {
+
       return AnalysisEngineFactory.createEngineDescription( OverlapJCasTermAnnotator.class,
-            DICTIONARY_DESCRIPTOR_KEY, descriptorPath );
+              ConfigParameterConstants.PARAM_LOOKUP_XML, descriptorPath );
    }
 
-   static public AnalysisEngineDescription createAnnotatorDescription( final String descriptorPath,
-                                                                       final int consecutiveSkipMax,
-                                                                       final int totalSkipMax )
-         throws ResourceInitializationException {
+   // TODO: Ambiguous constructor for AnalysisEngineDescription named as AnnotatorDescription. Consider refactor
+   //
+   // TODO: Create UTest for deprecated JCasTermAnnotator.DICTIONARY_DESCRIPTOR_KEY
+   // Make sure deprecated JCasTermAnnotator.DICTIONARY_DESCRIPTOR_KEY was correctly replaced by
+   //   ConfigParameterConstants.PARAM_LOOKUP_XML
+   static public AnalysisEngineDescription createAnnotatorDescription(final String descriptorPath,
+                                                                   final int consecutiveSkipMax,
+                                                                   final int totalSkipMax )
+      throws ResourceInitializationException {
+
       return AnalysisEngineFactory.createEngineDescription( OverlapJCasTermAnnotator.class,
-            DICTIONARY_DESCRIPTOR_KEY, descriptorPath,
-            CONS_SKIP_PRP_KEY, consecutiveSkipMax,
-            TOTAL_SKIP_PRP_KEY, totalSkipMax );
+           ConfigParameterConstants.PARAM_LOOKUP_XML, descriptorPath,
+           CONS_SKIP_PRP_KEY, consecutiveSkipMax,
+           TOTAL_SKIP_PRP_KEY, totalSkipMax );
    }
 
 }

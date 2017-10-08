@@ -1,5 +1,6 @@
 package org.apache.ctakes.dictionary.lookup2.ae;
 
+import org.apache.ctakes.core.config.ConfigParameterConstants;
 import org.apache.ctakes.core.resource.FileLocator;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
@@ -30,12 +31,16 @@ final public class DictionaryLookupFactory {
       return AnalysisEngineFactory.createEngineDescription( DefaultJCasTermAnnotator.class );
    }
 
-   public static AnalysisEngineDescription createCustomDictionaryLookupDescription( final String descriptorPath )
-         throws ResourceInitializationException {
-      checkDescriptorPath( descriptorPath );
-      return AnalysisEngineFactory.createEngineDescription( DefaultJCasTermAnnotator.class,
-            JCasTermAnnotator.DICTIONARY_DESCRIPTOR_KEY,
-            descriptorPath );
+   // TODO: Create UTest for deprecated JCasTermAnnotator.DICTIONARY_DESCRIPTOR_KEY
+   // Make sure deprecated JCasTermAnnotator.DICTIONARY_DESCRIPTOR_KEY was correctly replaced by
+   //   ConfigParameterConstants.PARAM_LOOKUP_XML
+   public static AnalysisEngineDescription createCustomDictionaryLookupDescription(final String descriptorPath)
+           throws ResourceInitializationException {
+
+      checkDescriptorPath(descriptorPath);
+      return AnalysisEngineFactory.createEngineDescription(DefaultJCasTermAnnotator.class,
+              ConfigParameterConstants.PARAM_LOOKUP_XML,
+              descriptorPath);
    }
 
    public static AnalysisEngineDescription createOverlapDictionaryLookupDescription()
@@ -43,12 +48,16 @@ final public class DictionaryLookupFactory {
       return AnalysisEngineFactory.createEngineDescription( OverlapJCasTermAnnotator.class );
    }
 
-   public static AnalysisEngineDescription createCustomOverlapDictionaryLookupDescription( final String descriptorPath )
-         throws ResourceInitializationException {
-      checkDescriptorPath( descriptorPath );
-      return AnalysisEngineFactory.createEngineDescription( OverlapJCasTermAnnotator.class,
-            JCasTermAnnotator.DICTIONARY_DESCRIPTOR_KEY,
-            descriptorPath );
+   // TODO: Create UTest for deprecated JCasTermAnnotator.DICTIONARY_DESCRIPTOR_KEY
+   // Make sure deprecated JCasTermAnnotator.DICTIONARY_DESCRIPTOR_KEY was correctly replaced by
+   //   ConfigParameterConstants.PARAM_LOOKUP_XML
+   public static AnalysisEngineDescription createCustomOverlapDictionaryLookupDescription(final String descriptorPath)
+           throws ResourceInitializationException {
+
+      checkDescriptorPath(descriptorPath);
+      return AnalysisEngineFactory.createEngineDescription(OverlapJCasTermAnnotator.class,
+              ConfigParameterConstants.PARAM_LOOKUP_XML,
+              descriptorPath);
    }
 
    /**
