@@ -18,8 +18,6 @@
  */
 package org.apache.ctakes.core.ae;
 
-import junit.framework.Assert;
-
 import org.apache.ctakes.typesystem.type.textspan.Segment;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -34,6 +32,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.util.cr.FilesCollectionReader;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestCDASegmentAnnotator {
 
@@ -73,9 +73,10 @@ public class TestCDASegmentAnnotator {
 				}
 			}
 		}
-		Assert.assertEquals(section_exists, true);
-		Assert.assertEquals(expected_begin, section_begin);
-		Assert.assertEquals(expected_end, section_end);
+
+		assertEquals(section_exists, true);
+		assertEquals(expected_begin, section_begin);
+		assertEquals("", expected_end, section_end);
 	}
 
 	public static class DumpOutputAE extends JCasAnnotator_ImplBase {
