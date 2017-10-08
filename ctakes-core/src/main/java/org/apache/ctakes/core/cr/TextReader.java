@@ -21,7 +21,6 @@ package org.apache.ctakes.core.cr;
 import org.apache.ctakes.core.pipeline.PipeBitInfo;
 import org.apache.ctakes.typesystem.type.structured.DocumentID;
 import org.apache.uima.UimaContext;
-import org.apache.uima.collection.CasInitializer;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.fit.component.JCasCollectionReader_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
@@ -76,44 +75,33 @@ public class TextReader extends JCasCollectionReader_ImplBase {
 
   @Override
   public void getNext(JCas jCas) throws IOException, CollectionException {
+
     File currentFile = this.filesIter.next();
     String filename = currentFile.getName();
     FileInputStream fileInputStream = new FileInputStream(currentFile);
     InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
     BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-    
-    CasInitializer casInitializer = getCasInitializer();
 
-    if (casInitializer != null)
-    {
-      casInitializer.initializeCas(bufferedReader, jCas.getCas());  
-    }
-    else  //No CAS Initializer, so read file and set document text ourselves
-    {       
-      try
-      {
-        byte[] contents = new byte[(int)currentFile.length() ];
-        fileInputStream.read( contents );   
-        String text;
-        text = new String(contents); 
-        //put document in CAS (assume CAS)
-        jCas.setDocumentText(text);
-      }
-      finally
-      {
-        if (fileInputStream != null)
-          fileInputStream.close();
-      }  
-        
+    // TODO: implement this with UIMA Detagger
+    try {
+
+      byte[] contents = new byte[(int)currentFile.length() ];
+      fileInputStream.read( contents );
+      String text;
+      text = new String(contents);
+
+      // put document in CAS (assume CAS)
+      jCas.setDocumentText(text);
+
+    } finally {
+      if (fileInputStream != null)
+        fileInputStream.close();
     }
 
     DocumentID documentIDAnnotation = new DocumentID(jCas);
     documentIDAnnotation.setDocumentID(filename);
     documentIDAnnotation.addToIndexes();
 
-    
     this.completed += 1;
   }
-
-  
 }

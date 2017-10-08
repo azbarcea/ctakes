@@ -54,7 +54,8 @@ import java.util.Map;
  * <li>Detects sections and adds Segment (aka section) annotations </li>
  * <li>Extracts document level data and stores in CAS as Property annotations.</li>
  * </ol>
- * 
+ *
+ * TODO: CasInitializers have been deprecated in UIMA. Refactor this.
  */
 @PipeBitInfo(
       name = "CDA View Sectionizer",
