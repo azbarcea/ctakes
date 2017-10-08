@@ -219,8 +219,7 @@ public class SemanticTypeKernel extends CacheKernel {
 	private List<String> tuiList = null;
 	private String cuiTuiQuery;
 	// private DataSource dataSource;
-	// private SimpleJdbcTemplate simpleJdbcTemplate;
-	// private JdbcTemplate jdbcTemplate;
+	// private JdbcTemplate jdbcOperations;
 
 	private String mode = "MAINSUI";
 
@@ -316,7 +315,7 @@ public class SemanticTypeKernel extends CacheKernel {
 	// * init cui-tui map from query
 	// */
 	// public void initCuiTuiMapFromQuery() {
-	// this.jdbcTemplate.query(this.cuiTuiQuery, new RowCallbackHandler() {
+	// this.jdbcOperations.query(this.cuiTuiQuery, new RowCallbackHandler() {
 	// // don't duplicate tui strings to save memory
 	// Map<String, String> tuiMap = new HashMap<String, String>();
 	//
@@ -362,12 +361,6 @@ public class SemanticTypeKernel extends CacheKernel {
 	public void setCuiTuiQuery(String cuiTuiQuery) {
 		this.cuiTuiQuery = cuiTuiQuery;
 	}
-
-	// public void setDataSource(DataSource dataSource) {
-	// this.dataSource = dataSource;
-	// // this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
-	// this.jdbcTemplate = new JdbcTemplate(dataSource);
-	// }
 
 	public void setMode(String mode) {
 		this.mode = mode;

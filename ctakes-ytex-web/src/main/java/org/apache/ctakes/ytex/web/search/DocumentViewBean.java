@@ -25,7 +25,8 @@ import javax.faces.context.FacesContext;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * JSF bean for viewing a document retrieved via semanticSearch.jspx. Relies on
@@ -43,7 +44,7 @@ public class DocumentViewBean implements Serializable {
 	private transient DataSource dataSource;
 	private String docText;
 	private int documentID;
-	private transient SimpleJdbcTemplate jdbcTemplate;
+	private transient JdbcOperations jdbcOperations;
 	private String rawText;
 
 	private Properties searchProperties;
@@ -101,13 +102,13 @@ public class DocumentViewBean implements Serializable {
 	}
 
 	private String loadRawText(int documentId) {
-		return this.jdbcTemplate.queryForObject(this.getQuery(), String.class,
+		return this.jdbcOperations.queryForObject(this.getQuery(), String.class,
 				documentId);
 	}
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
-		this.jdbcTemplate = new SimpleJdbcTemplate(dataSource);
+		this.jdbcOperations = new JdbcTemplate(dataSource);
 	}
 
 	public void setSearchProperties(Properties searchProperties) {

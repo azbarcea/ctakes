@@ -18,30 +18,21 @@
  */
 package org.apache.ctakes.ytex.kernel.tree;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.sql.DataSource;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+
+import javax.sql.DataSource;
+import java.io.*;
+import java.util.*;
 
 public class InstanceTreeBuilderImpl implements InstanceTreeBuilder {
+
 	static final Log log = LogFactory.getLog(InstanceTreeBuilderImpl.class);
-	SimpleJdbcTemplate simpleJdbcTemplate;
+
+	JdbcOperations jdbcOperations;
+
 	private DataSource dataSource;
 
 	public DataSource getDataSource() {
@@ -50,7 +41,7 @@ public class InstanceTreeBuilderImpl implements InstanceTreeBuilder {
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
-		this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
+		this.jdbcOperations = new JdbcTemplate(dataSource);
 	}
 
 	Node nodeFromRow(NodeMappingInfo nodeInfo, Map<String, Object> nodeValues) {
@@ -146,7 +137,7 @@ public class InstanceTreeBuilderImpl implements InstanceTreeBuilder {
 			QueryMappingInfo qInfo, Map<NodeKey, Node> nodeKeyMap) {
 		Node[] currentPath = new Node[qInfo.getNodeTypes().size()];
 		Map<Long, Node> instanceMap = new HashMap<Long, Node>();
-		List<Map<String, Object>> rowData = simpleJdbcTemplate.queryForList(
+		List<Map<String, Object>> rowData = jdbcOperations.queryForList(
 				qInfo.getQuery(), qInfo.getQueryArgs());
 		for (Map<String, Object> row : rowData) {
 			for (int i = 0; i < qInfo.getNodeTypes().size(); i++) {
@@ -180,8 +171,8 @@ public class InstanceTreeBuilderImpl implements InstanceTreeBuilder {
 	public void addChildrenToNodes(Map<NodeKey, Node> nodeKeyMap,
 			QueryMappingInfo qInfo) {
 		// run query
-		List<Map<String, Object>> rowData = simpleJdbcTemplate.queryForList(
-				qInfo.getQuery(), qInfo.getQueryArgs());
+		List<Map<String, Object>> rowData = jdbcOperations.queryForList(qInfo.getQuery(), qInfo.getQueryArgs());
+
 		// iterate through rows, adding nodes as children of existing nodes
 		for (Map<String, Object> row : rowData) {
 			// allocate array for holding node path corresponding to row

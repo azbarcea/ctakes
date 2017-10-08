@@ -34,9 +34,10 @@ import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 import org.apache.uima.resource.metadata.ProcessingResourceMetaData;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
+import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.jdbc.support.lob.DefaultLobHandler;
@@ -94,7 +95,7 @@ public class DBCollectionReader extends CollectionReader_ImplBase {
 	protected String keyTypeName = "org.apache.ctakes.ytex.uima.types.DocKey";
 
 	protected DataSource dataSource;
-	protected SimpleJdbcTemplate simpleJdbcTemplate;
+	protected JdbcOperations jdbcOperations;
 	protected NamedParameterJdbcTemplate namedJdbcTemplate;
 	protected TransactionTemplate txTemplate;
 	protected boolean keyNameToLowerCase = true;
@@ -163,7 +164,8 @@ public class DBCollectionReader extends CollectionReader_ImplBase {
 					.getApplicationContext().getBean(
 							"collectionReaderDataSource");
 		}
-		simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
+		// TODO: there is no need for both JdbcTemplate and NamedParameterJdbcTemplate. consider refactor
+		jdbcOperations = new JdbcTemplate(dataSource);
 		namedJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 
@@ -175,7 +177,7 @@ public class DBCollectionReader extends CollectionReader_ImplBase {
 						@Override
 						public List<Map<String, Object>> doInTransaction(
 								TransactionStatus arg0) {
-							return simpleJdbcTemplate
+							return jdbcOperations
 									.queryForList(queryGetDocumentKeys);
 						}
 					});

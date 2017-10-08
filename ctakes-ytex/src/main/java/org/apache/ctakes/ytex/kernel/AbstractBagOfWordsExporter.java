@@ -38,7 +38,6 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowCallbackHandler;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -46,8 +45,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 public class AbstractBagOfWordsExporter {
 
-	protected SimpleJdbcTemplate simpleJdbcTemplate;
-	protected JdbcTemplate jdbcTemplate;
+	protected JdbcTemplate jdbcOperations;
 	protected PlatformTransactionManager transactionManager;
 	protected TransactionTemplate txNew;
 
@@ -55,8 +53,7 @@ public class AbstractBagOfWordsExporter {
 		return transactionManager;
 	}
 
-	public void setTransactionManager(
-			PlatformTransactionManager transactionManager) {
+	public void setTransactionManager(PlatformTransactionManager transactionManager) {
 		this.transactionManager = transactionManager;
 		txNew = new TransactionTemplate(transactionManager);
 		txNew.setPropagationBehavior(TransactionTemplate.PROPAGATION_REQUIRES_NEW);
@@ -67,12 +64,11 @@ public class AbstractBagOfWordsExporter {
 	}
 
 	public void setDataSource(DataSource ds) {
-		this.jdbcTemplate = new JdbcTemplate(ds);
-		this.simpleJdbcTemplate = new SimpleJdbcTemplate(ds);
+		this.jdbcOperations = new JdbcTemplate(ds);
 	}
 
 	public DataSource getDataSource(DataSource ds) {
-		return this.jdbcTemplate.getDataSource();
+		return this.jdbcOperations.getDataSource();
 	}
 
 	/**
@@ -89,7 +85,7 @@ public class AbstractBagOfWordsExporter {
 
 			@Override
 			public Object doInTransaction(TransactionStatus txStatus) {
-				jdbcTemplate.query(new PreparedStatementCreator() {
+				jdbcOperations.query(new PreparedStatementCreator() {
 
 					@Override
 					public PreparedStatement createPreparedStatement(
@@ -180,7 +176,7 @@ public class AbstractBagOfWordsExporter {
 
 			@Override
 			public Object doInTransaction(TransactionStatus txStatus) {
-				jdbcTemplate.query(new PreparedStatementCreator() {
+				jdbcOperations.query(new PreparedStatementCreator() {
 
 					@Override
 					public PreparedStatement createPreparedStatement(

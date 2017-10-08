@@ -18,21 +18,17 @@
  */
 package org.apache.ctakes.ytex.web.search;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
 import javax.sql.DataSource;
-
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ConceptSearchServiceImpl implements ConceptSearchService,
 		InitializingBean {
@@ -55,7 +51,7 @@ public class ConceptSearchServiceImpl implements ConceptSearchService,
 	private DataSource dataSource;
 	private String fwordToConceptIdQuery;
 
-	private SimpleJdbcTemplate jdbcTemplate;
+	private JdbcOperations jdbcOperations;
 
 	private Properties searchProperties;
 	private Properties ytexProperties;
@@ -86,7 +82,7 @@ public class ConceptSearchServiceImpl implements ConceptSearchService,
 			fword = words[0];
 			// nFWordLength = fword.length();
 		}
-		// return this.jdbcTemplate.query(query, new
+		// return this.jdbcOperations.query(query, new
 		// UMLSFirstWordRowMapper(),
 		// new Object[] { fword.length(), fword, nTextLength, text });
 		Map<String, Object> args = new HashMap<String, Object>();
@@ -94,14 +90,13 @@ public class ConceptSearchServiceImpl implements ConceptSearchService,
 		args.put("fwordlen", fword.length());
 		args.put("term", text);
 		args.put("termlen", nTextLength);
-		return this.jdbcTemplate.query(fwordToConceptIdQuery,
-				new ConceptFirstWordRowMapper(), args);
+		return jdbcOperations.query(fwordToConceptIdQuery, new ConceptFirstWordRowMapper(), args);
 	}
 
 	private List<ConceptFirstWord> getConceptById(String conceptId) {
 		String term = getTermByConceptId(conceptId);
 		if (term != null) {
-			List<ConceptFirstWord> terms = new ArrayList<ConceptFirstWord>(1);
+			List<ConceptFirstWord> terms = new ArrayList<>(1);
 			ConceptFirstWord cft = new ConceptFirstWord();
 			cft.setConceptId(conceptId);
 			cft.setFword(term);
@@ -109,7 +104,7 @@ public class ConceptSearchServiceImpl implements ConceptSearchService,
 			terms.add(cft);
 			return terms;
 		} else {
-			return new ArrayList<ConceptFirstWord>(0);
+			return new ArrayList<>(0);
 		}
 	}
 
@@ -133,8 +128,7 @@ public class ConceptSearchServiceImpl implements ConceptSearchService,
 	public String getTermByConceptId(String conceptId) {
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("conceptId", conceptId);
-		return this.jdbcTemplate.queryForObject(this.conceptIdToTermQuery,
-				String.class, args);
+		return this.jdbcOperations.queryForObject(this.conceptIdToTermQuery, String.class, args);
 	}
 
 	public Properties getYtexProperties() {
@@ -157,7 +151,7 @@ public class ConceptSearchServiceImpl implements ConceptSearchService,
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
-		this.jdbcTemplate = new SimpleJdbcTemplate(dataSource);
+		this.jdbcOperations = new JdbcTemplate(dataSource);
 	}
 
 	public void setSearchProperties(Properties searchProperties) {
