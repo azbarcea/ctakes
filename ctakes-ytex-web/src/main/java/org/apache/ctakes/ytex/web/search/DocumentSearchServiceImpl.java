@@ -18,22 +18,19 @@
  */
 package org.apache.ctakes.ytex.web.search;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
-import javax.sql.DataSource;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.InitializingBean;
+
+import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+
+import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
 
 public class DocumentSearchServiceImpl implements DocumentSearchService,
 		InitializingBean {
@@ -54,8 +51,11 @@ public class DocumentSearchServiceImpl implements DocumentSearchService,
 	}
 	private static final Log log = LogFactory
 			.getLog(DocumentSearchServiceImpl.class);
+
 	private DataSource dataSource;
-	private SimpleJdbcTemplate jdbcTemplate;
+
+	private JdbcOperations jdbcOperations;
+
 	private String query;
 
 	private Properties searchProperties;
@@ -109,7 +109,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService,
 			log.debug("executing query, query=" + query
 					+ ", args=" + mapArgs);
 		}
-		return this.jdbcTemplate.query(query,
+		return this.jdbcOperations.query(query,
 				new DocumentSearchResultMapper(), mapArgs);
 	}
 
@@ -122,7 +122,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService,
 	 *         NOTE (string) fields.
 	 */
 	public List<Map<String, Object>> fullTextSearch(String searchTerm) {
-		return this.jdbcTemplate.queryForList(
+		return this.jdbcOperations.queryForList(
 				this.searchProperties.getProperty("retrieveDocumentFullText"),
 				searchTerm);
 	}
@@ -138,7 +138,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService,
 	 * @return note text.
 	 */
 	public String getFullTextSearchDocument(int documentId) {
-		return this.jdbcTemplate.queryForObject(this.searchProperties
+		return this.jdbcOperations.queryForObject(this.searchProperties
 				.getProperty("retrieveFullTextSearchDocument"), String.class,
 				documentId);
 	}
@@ -173,7 +173,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService,
 	 */
 	public List<DocumentSearchResult> searchByCui(String code) {
 		Map<String, Object> mapArgs = this.initMapArgs(code);
-		return this.jdbcTemplate.query(query, new DocumentSearchResultMapper(),
+		return this.jdbcOperations.query(query, new DocumentSearchResultMapper(),
 				mapArgs);
 		// String query =
 		// "select new ytex.web.search.DocumentSearchResult(d.documentID, substring(d.docText, 1,10), current_timestamp(), substring(d.docText, 1,10), substring(d.docText, 1,10), substring(d.docText, ne.begin+1,ne.end-ne.begin)) from OntologyConceptAnnotation o inner join o.namedEntityAnnotation ne inner join o.namedEntityAnnotation.document d";
@@ -186,7 +186,8 @@ public class DocumentSearchServiceImpl implements DocumentSearchService,
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
-		this.jdbcTemplate = new SimpleJdbcTemplate(dataSource);
+
+		this.jdbcOperations = new JdbcTemplate(dataSource);
 	}
 
 	public void setSearchProperties(Properties searchProperties) {

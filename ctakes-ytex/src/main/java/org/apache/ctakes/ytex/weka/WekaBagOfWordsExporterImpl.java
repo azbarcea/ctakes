@@ -211,7 +211,7 @@ public class WekaBagOfWordsExporterImpl extends AbstractBagOfWordsExporter
 
 			@Override
 			public Object doInTransaction(TransactionStatus txStatus) {
-				jdbcTemplate.query(new PreparedStatementCreator() {
+				jdbcOperations.query(new PreparedStatementCreator() {
 
 					@Override
 					public PreparedStatement createPreparedStatement(

@@ -1022,7 +1022,7 @@ public class DocumentMapperServiceImpl implements DocumentMapperService,
 		// if (end > listFSA.size())
 		// end = listFSA.size();
 		// final List<AnnoFSAttribute> chunkList = listFSA.subList(start, end);
-		// jdbcTemplate.batchUpdate(mapInfo.getSql(),
+		// jdbcOperations.batchUpdate(mapInfo.getSql(),
 		// new BatchPreparedStatementSetter() {
 		//
 		// @Override
@@ -1068,7 +1068,7 @@ public class DocumentMapperServiceImpl implements DocumentMapperService,
 	/**
 	 * for the list l, perform l.size()/batchSize batch updates. Avoid mysql
 	 * packet too large exceptions with large batch updates. Call spring
-	 * jdbcTemplate.batchUpdate internally with sublists of l with size
+	 * jdbcOperations.batchUpdate internally with sublists of l with size
 	 * batchSize.
 	 * 
 	 * @param sql
@@ -1110,7 +1110,7 @@ public class DocumentMapperServiceImpl implements DocumentMapperService,
 	private void saveAnnoLinks(final List<AnnoLink> listAnnoLinks) {
 		if (log.isTraceEnabled())
 			log.trace("begin saveAnnoLinks");
-		// jdbcTemplate
+		// jdbcOperations
 		// .batchUpdate(
 		// "insert into "
 		// + this.getTablePrefix()
@@ -1185,7 +1185,7 @@ public class DocumentMapperServiceImpl implements DocumentMapperService,
 		// don't know how to map this annotation
 		if (mapInfo == null)
 			return;
-		// jdbcTemplate.batchUpdate(mapInfo.getSql(),
+		// jdbcOperations.batchUpdate(mapInfo.getSql(),
 		// new BatchPreparedStatementSetter() {
 		//
 		// @Override

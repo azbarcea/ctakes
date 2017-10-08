@@ -18,36 +18,21 @@
  */
 package org.apache.ctakes.ytex.kernel;
 
-import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.InvalidPropertiesFormatException;
-import java.util.Map;
-import java.util.Properties;
-import java.util.SortedMap;
-import java.util.SortedSet;
-import java.util.TreeMap;
-import java.util.TreeSet;
-
-import javax.sql.DataSource;
-
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.GnuParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
+
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
 
 public class SparseDataExporterImpl implements SparseDataExporter {
 
@@ -99,8 +84,6 @@ public class SparseDataExporterImpl implements SparseDataExporter {
 	protected NamedParameterJdbcTemplate namedJdbcTemplate;
 
 	protected Map<String, SparseDataFormatterFactory> nameToFormatterMap = new HashMap<String, SparseDataFormatterFactory>();
-
-	protected SimpleJdbcTemplate simpleJdbcTemplate;
 
 	protected TransactionTemplate txTemplateNew;
 
@@ -441,7 +424,6 @@ public class SparseDataExporterImpl implements SparseDataExporter {
 
 	public void setDataSource(DataSource ds) {
 		this.jdbcTemplate = new JdbcTemplate(ds);
-		this.simpleJdbcTemplate = new SimpleJdbcTemplate(ds);
 		this.namedJdbcTemplate = new NamedParameterJdbcTemplate(ds);
 	}
 

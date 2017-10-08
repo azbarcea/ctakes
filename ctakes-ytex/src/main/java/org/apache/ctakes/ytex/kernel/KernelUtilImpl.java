@@ -198,7 +198,7 @@ public class KernelUtilImpl implements KernelUtil {
 		Connection conn = null;
 		ResultSet rs = null;
 		try {
-			// jdbcTemplate.query(strQuery, new RowCallbackHandler() {
+			// jdbcOperations.query(strQuery, new RowCallbackHandler() {
 			RowCallbackHandler ch = new RowCallbackHandler() {
 
 				@Override
