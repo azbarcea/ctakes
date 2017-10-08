@@ -32,8 +32,12 @@ import java.util.Map;
 import org.apache.ctakes.core.resource.FileLocator;
 import org.apache.ctakes.preprocessor.ClinicalNotePreProcessor;
 import org.apache.ctakes.preprocessor.DocumentMetaData;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * Unit tests for the ClinicalNotePreProcessor class.  These test the class
@@ -42,27 +46,14 @@ import junit.framework.TestCase;
  * 
  * @author Mayo Clinic
  */
-public class ClinicalNotePreProcessorTest extends TestCase
+public class ClinicalNotePreProcessorTest
 {
     private ClinicalNotePreProcessor iv_cnotePreProcessor;
     private String iv_cnoteXML;
 
-    /**
-     * Constructor for ClinicalNotePreProcessorTest.
-     * @param arg0
-     */
-    public ClinicalNotePreProcessorTest(String arg0)
+    @Before
+    public void setUp() throws Exception
     {
-        super(arg0);
-    }
-
-    /*
-     * @see TestCase#setUp()
-     */
-    protected void setUp() throws Exception
-    {
-        super.setUp();
-
         String dtdLocation = "src/test/resources/NotesIIST_RTF.DTD";
         iv_cnotePreProcessor = new ClinicalNotePreProcessor(FileLocator.getAsStream(dtdLocation), false);
 
@@ -75,17 +66,10 @@ public class ClinicalNotePreProcessorTest extends TestCase
         iv_cnoteXML = load(cnoteLocation);
     }
 
-    /*
-     * @see TestCase#tearDown()
-     */
-    protected void tearDown() throws Exception
-    {
-        super.tearDown();
-    }
-
     /**
      * Tests the process method.
      */
+    @Test
     public void testProcess()
     {
         try
