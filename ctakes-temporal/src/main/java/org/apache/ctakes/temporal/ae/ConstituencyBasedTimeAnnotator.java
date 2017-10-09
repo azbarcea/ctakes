@@ -133,7 +133,7 @@ TemporalEntityAnnotator_ImplBase {
    * ClearTK will automatically Resolve the String to an InputStream.
    * This will allow resources to be read within from a jar as well as File.  
    */
-  public static AnalysisEngineDescription createEnsembleDescription(File modelDirectory,
+    public static AnalysisEngineDescription createEnsembleDescription(File modelDirectory,
       String viewName) throws ResourceInitializationException {
     return AnalysisEngineFactory.createEngineDescription(
         ConstituencyBasedTimeAnnotator.class,
