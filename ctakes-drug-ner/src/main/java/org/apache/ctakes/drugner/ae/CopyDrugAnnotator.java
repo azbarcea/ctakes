@@ -173,7 +173,7 @@ public class CopyDrugAnnotator extends JCasAnnotator_ImplBase
 				if (okayToSkip) {
 					destObj.addToIndexes();
 				} else {
-					Iterator lookupWindows = FSUtil.getAnnotationsInSpanIterator(jcas, org.apache.ctakes.typesystem.type.textspan.LookupWindowAnnotation.type, segment.getBegin(), segment.getEnd());
+					Iterator lookupWindows = FSUtil.getAnnotationsIteratorInSpan(jcas, org.apache.ctakes.typesystem.type.textspan.LookupWindowAnnotation.type, segment.getBegin(), segment.getEnd());
 					while (lookupWindows.hasNext()){
 						org.apache.ctakes.typesystem.type.textspan.LookupWindowAnnotation lookup = (org.apache.ctakes.typesystem.type.textspan.LookupWindowAnnotation) lookupWindows.next();
 						org.apache.ctakes.typesystem.type.textspan.DrugLookupWindowAnnotation drugLookup = new org.apache.ctakes.typesystem.type.textspan.DrugLookupWindowAnnotation(jcas, lookup.getBegin(), lookup.getEnd()); //Reorganized paths in 3.0 SPM

@@ -84,10 +84,7 @@ public class PSESentenceAnnotator extends JCasAnnotator_ImplBase {
 			// sentence contains
 			// drug and they are in the same line, then sentence will be
 			// previous + current sentence
-			Iterator neIter = FSUtil
-					.getAnnotationsInSpanIterator(jcas,
-							IdentifiedAnnotation.type, sen.getBegin(),
-							sen.getEnd() + 1);
+			Iterator neIter = FSUtil.getAnnotationsIteratorInSpan(jcas, IdentifiedAnnotation.type, sen.getBegin(), sen.getEnd() + 1);
 			while (neIter.hasNext()) {
 				IdentifiedAnnotation n = (IdentifiedAnnotation) neIter.next();
 				if (n.getTypeID() == 2 || n.getTypeID() == 3)
@@ -114,9 +111,7 @@ public class PSESentenceAnnotator extends JCasAnnotator_ImplBase {
 				// only if they are in the same line
 				if (SEUtil.isSpanInSameLine(jcas, previousSenSpan[0],
 						sen.getEnd())) {
-					neIter = FSUtil.getAnnotationsInSpanIterator(jcas,
-							IdentifiedAnnotation.type, previousSenSpan[0],
-							previousSenSpan[1] + 1);
+					neIter = FSUtil.getAnnotationsIteratorInSpan(jcas, IdentifiedAnnotation.type, previousSenSpan[0],previousSenSpan[1] + 1);
 					while (neIter.hasNext()) {
 						IdentifiedAnnotation n = (IdentifiedAnnotation) neIter
 								.next();

@@ -238,7 +238,7 @@ public class SEUtil {
 		ignoreWords.add("and");
 		ignoreWords.add("or");
 
-		Iterator wtIter = FSUtil.getAnnotationsInSpanIterator(
+		Iterator wtIter = FSUtil.getAnnotationsIteratorInSpan(
 				jcas, WordToken.type, begin, end);
 		int cnt=0;
 		
@@ -264,14 +264,14 @@ public class SEUtil {
 		ignoreWords.add("or");
 
 		List<IdentifiedAnnotation> neLst = new ArrayList<IdentifiedAnnotation>();
-		Iterator neIter = FSUtil.getAnnotationsInSpanIterator(
+		Iterator neIter = FSUtil.getAnnotationsIteratorInSpan(
 				jcas, IdentifiedAnnotation.type, begin, end+1);
 		while(neIter.hasNext()) {
 			IdentifiedAnnotation ne = (IdentifiedAnnotation) neIter.next();
 			if(ne.getTypeID()==neType) neLst.add(ne);
 		}
 		
-		Iterator wtIter = FSUtil.getAnnotationsInSpanIterator(
+		Iterator wtIter = FSUtil.getAnnotationsIteratorInSpan(
 				jcas, WordToken.type, begin, end);
 		int cnt=0;
 		while(wtIter.hasNext()) {
@@ -317,7 +317,7 @@ public class SEUtil {
 		if(senText.indexOf(" - ")!=-1) return false;
 		
 		//sentence end is newline begin
-		Iterator ntIter = FSUtil.getAnnotationsInSpanIterator(
+		Iterator ntIter = FSUtil.getAnnotationsIteratorInSpan(
 				jcas, NewlineToken.type, senSpan[0], senSpan[1]+2);
 		while(ntIter.hasNext()) {
 			NewlineToken nt = (NewlineToken) ntIter.next();
@@ -341,7 +341,7 @@ public class SEUtil {
 	 * @return
 	 */
 	public static boolean isSpanInSameLine(JCas jcas, int begin, int end) {
-		Iterator ntIter = FSUtil.getAnnotationsInSpanIterator(
+		Iterator ntIter = FSUtil.getAnnotationsIteratorInSpan(
 				jcas, NewlineToken.type, begin, end-1);
 		if(ntIter.hasNext()) return false;
 		return true;
@@ -355,7 +355,7 @@ public class SEUtil {
 	 * @return
 	 */
 	public static boolean isDrugBetween(JCas jcas, int begin, int end) {
-		Iterator neIter = FSUtil.getAnnotationsInSpanIterator(
+		Iterator neIter = FSUtil.getAnnotationsIteratorInSpan(
 				jcas, IdentifiedAnnotation.type, begin, end+1);
 		while(neIter.hasNext()) {
 			IdentifiedAnnotation ne = (IdentifiedAnnotation) neIter.next();
@@ -373,7 +373,7 @@ public class SEUtil {
 	 * @return
 	 */
 	public static boolean isPSEBetween(JCas jcas, int begin, int end) {
-		Iterator neIter = FSUtil.getAnnotationsInSpanIterator(
+		Iterator neIter = FSUtil.getAnnotationsIteratorInSpan(
 				jcas, IdentifiedAnnotation.type, begin, end+1);
 		while(neIter.hasNext()) {
 			IdentifiedAnnotation ne = (IdentifiedAnnotation) neIter.next();
