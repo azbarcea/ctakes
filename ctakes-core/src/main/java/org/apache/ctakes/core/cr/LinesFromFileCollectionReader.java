@@ -173,18 +173,8 @@ public class LinesFromFileCollectionReader extends CollectionReader_ImplBase {
 		  	iv_logger.debug("id="+id);
 		  	iv_logger.debug("text="+text);
 		  	
-			//if there's a CAS Initializer, call it	
-			if (getCasInitializer() != null)
-			{
-				Reader reader = new StringReader(text);
-				getCasInitializer().initializeCas(reader, cas);
-				reader.close();
-			}
-			else  //No CAS Initiliazer, so read file and set document text ourselves
-			{				
-				jcas.setDocumentText(text);
-			}
-		   
+			jcas.setDocumentText(text);
+
 		    //set language if it was explicitly specified as a configuration parameter
 		    if (iv_language != null)
 		    {

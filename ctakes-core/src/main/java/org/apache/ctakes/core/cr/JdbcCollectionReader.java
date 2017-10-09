@@ -266,29 +266,17 @@ public class JdbcCollectionReader extends CollectionReader_ImplBase
                         + docColTypeName);
             }
 
-            try
-            {
-                // if there's a CAS Initializer, call it
-                if (getCasInitializer() != null)
-                {
-                    Reader reader = new StringReader(document);
-                    getCasInitializer().initializeCas(reader, cas);
-                } else
-                {
-                    // No CAS Initiliazer, so set document text ourselves.
-                    // put document in CAS (assume CAS)
-                    cas.getJCas().setDocumentText(document);
-                }
+            try {
+                // No CAS Initiliazer, so set document text ourselves.
+                // put document in CAS (assume CAS)
+                cas.getJCas().setDocumentText(document);
 
-                DocumentID docIdAnnot = new DocumentID(cas
-                        .getJCas());
+                DocumentID docIdAnnot = new DocumentID(cas.getJCas());
                 docIdAnnot.setDocumentID(getDocumentID(rs));
                 docIdAnnot.addToIndexes();
 
-                logger.info("Reading document with ID="
-                        + docIdAnnot.getDocumentID());
-            } catch (Exception e)
-            {
+                logger.info("Reading document with ID="+ docIdAnnot.getDocumentID());
+            } catch (Exception e) {
                 logger.error("CasInitializer failed to process document: ");
                 logger.error(document);
                 throw e;

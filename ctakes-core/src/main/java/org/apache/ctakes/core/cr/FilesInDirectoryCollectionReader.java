@@ -216,46 +216,34 @@ public class FilesInDirectoryCollectionReader extends CollectionReader_ImplBase
 	  	try
 	    {
 	        jcas = aCAS.getJCas();
-	   	
-	  		//open input stream to file
-          File file = iv_files.get( iv_currentIndex );
-          fileInputStream = new FileInputStream( file );
-          fileReader = new BufferedReader(new InputStreamReader(fileInputStream));
 
-	      	DocumentID documentIDAnnotation = new DocumentID(jcas);
-		    String docID = createDocID(file);
-		    documentIDAnnotation.setDocumentID(docID);
-		    documentIDAnnotation.addToIndexes();
+			//open input stream to file
+			File file = iv_files.get( iv_currentIndex );
+			fileInputStream = new FileInputStream( file );
+			fileReader = new BufferedReader(new InputStreamReader(fileInputStream));
 
-	      	//if there's a CAS Initializer, call it	
-			if (getCasInitializer() != null)
-			{
-				getCasInitializer().initializeCas(fileReader, aCAS);	
+			DocumentID documentIDAnnotation = new DocumentID(jcas);
+			String docID = createDocID(file);
+			documentIDAnnotation.setDocumentID(docID);
+			documentIDAnnotation.addToIndexes();
+
+			byte[] contents = new byte[(int)file.length() ];
+			fileInputStream.read( contents );
+			String text;
+			if (iv_encoding != null) {
+				text = new String(contents, iv_encoding);
+			} else {
+				text = new String(contents);
 			}
-			else  //No CAS Initializer, so read file and set document text ourselves
-			{				
-				byte[] contents = new byte[(int)file.length() ];
-				fileInputStream.read( contents );   
-				String text;
-				if (iv_encoding != null)
-				{   
-					text = new String(contents, iv_encoding);
-				}
-				else
-				{ 
-					text = new String(contents); 
-				}
-				//put document in CAS (assume CAS)
-				jcas.setDocumentText(text);
-			}
-	   
-		    //set language if it was explicitly specified as a configuration parameter
-		    if (iv_language != null)
-		    {
-		//      ((DocumentAnnotation)jcas.getDocumentAnnotationFs()).setLanguage(iv_language);
-		    }
+			//put document in CAS (assume CAS)
+			jcas.setDocumentText(text);
 
-	    }		
+			// set language if it was explicitly specified as a configuration parameter
+			// TODO: remove unused code
+			if (iv_language != null) {
+				// ((DocumentAnnotation)jcas.getDocumentAnnotationFs()).setLanguage(iv_language);
+			}
+	    }
 	    catch (CASException e)
 	    {
 	      throw new CollectionException(e);
