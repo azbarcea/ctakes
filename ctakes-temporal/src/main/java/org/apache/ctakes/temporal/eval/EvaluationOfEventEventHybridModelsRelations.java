@@ -61,6 +61,7 @@ import org.cleartk.util.ViewUriUtil;
 
 import java.io.File;
 import java.net.URI;
+import java.nio.file.Paths;
 import java.util.*;
 
 //import org.apache.ctakes.temporal.ae.EventTimeSyntacticAnnotator;
@@ -353,8 +354,16 @@ EvaluationOfTemporalRelations_ImplBase{
 					GOLD_VIEW_NAME);
 
 			aggregateBuilder.add(AnalysisEngineFactory.createEngineDescription(RemoveRelations.class));
-			aggregateBuilder.add(EventEventCRFRelationAnnotator.createAnnotatorDescription(new File(directory,"event-event-crf")));
-			aggregateBuilder.add(EventEventRelationSeedBasedAnnotator.createAnnotatorDescription(new File(directory,"event-event-svm")));
+			aggregateBuilder.add(
+					EventEventCRFRelationAnnotator.createAnnotatorDescription(
+							Paths.get(directory.getAbsolutePath(), "event-event-crf").toAbsolutePath().toString()
+					)
+			);
+			aggregateBuilder.add(
+					EventEventRelationSeedBasedAnnotator.createAnnotatorDescription(
+							Paths.get(directory.getAbsolutePath(),"event-event-svm").toAbsolutePath().toString()
+					)
+			);
 			if(this.i2b2Output != null){
 				aggregateBuilder.add(AnalysisEngineFactory.createEngineDescription(WriteAnaforaXML.class, WriteAnaforaXML.PARAM_OUTPUT_DIR, this.i2b2Output), "TimexView", CAS.NAME_DEFAULT_SOFA);
 			}

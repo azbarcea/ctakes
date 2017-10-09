@@ -64,6 +64,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.net.URI;
+import java.nio.file.Paths;
 import java.util.*;
 
 //import org.apache.ctakes.temporal.ae.EventTimeSyntacticAnnotator;
@@ -416,8 +417,13 @@ EvaluationOfTemporalRelations_ImplBase{
 		//		aggregateBuilder.add(AnalysisEngineFactory.createEngineDescription(RemoveNonUMLSEvents.class));
 
 		aggregateBuilder.add(AnalysisEngineFactory.createEngineDescription(RemoveRelations.class));
-		aggregateBuilder.add(this.baseline ? RecallBaselineEventTimeRelationAnnotator.createAnnotatorDescription(directory) :
-			EventEventRelationAnnotator.createAnnotatorDescription(new File(directory,"event-event")));
+		aggregateBuilder.add(
+				this.baseline ?
+						RecallBaselineEventTimeRelationAnnotator.createAnnotatorDescription(directory) :
+						EventEventRelationAnnotator.createAnnotatorDescription(
+								Paths.get(directory.getAbsolutePath(),"event-event").toAbsolutePath().toString()
+						)
+		);
 
 		//count how many system predicted relations, their arguments are close to each other, without any other event in between
 		aggregateBuilder.add(AnalysisEngineFactory.createEngineDescription(CountCloseRelation.class));

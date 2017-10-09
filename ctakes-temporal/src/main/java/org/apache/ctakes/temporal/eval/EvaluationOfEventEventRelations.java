@@ -137,7 +137,8 @@ EvaluationOfTemporalRelations_ImplBase {
 
     aggregateBuilder.add(AnalysisEngineFactory.createEngineDescription(RemoveRelations.class));
     aggregateBuilder.add(
-        EventEventRelationAnnotator.createAnnotatorDescription(directory));
+        EventEventRelationAnnotator.createAnnotatorDescription(directory.getAbsolutePath())
+    );
 
     Function<BinaryTextRelation, ?> getSpan = new Function<BinaryTextRelation, HashableArguments>() {
       public HashableArguments apply(BinaryTextRelation relation) {

@@ -74,7 +74,7 @@ public class EvaluationOfNEPredicateEventSpans extends
 			throws ResourceInitializationException {
 		// not training a model - just using the NEs and predicates
 //		return AnalysisEngineFactory.createEngineDescription(NoOpAnnotator.class);
-	    return NEPredicateEventAnnotator.createAnnotatorDescription(directory);
+	    return NEPredicateEventAnnotator.createAnnotatorDescription(directory.getAbsolutePath());
 	}
 
 	@Override
