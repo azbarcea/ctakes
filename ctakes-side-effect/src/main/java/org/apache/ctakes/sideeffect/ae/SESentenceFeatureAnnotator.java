@@ -135,8 +135,7 @@ public class SESentenceFeatureAnnotator extends JCasAnnotator_ImplBase {
 		List drug = new ArrayList();
 		List pse = new ArrayList();
 
-		Iterator neIter = FSUtil.getAnnotationsInSpanIterator(jcas,
-				IdentifiedAnnotation.type, ps.getBegin(), ps.getEnd() + 1);
+		Iterator neIter = FSUtil.getAnnotationsIteratorInSpan(jcas, IdentifiedAnnotation.type, ps.getBegin(), ps.getEnd() + 1);
 		while (neIter.hasNext()) {
 			IdentifiedAnnotation n = (IdentifiedAnnotation) neIter.next();
 			// drug

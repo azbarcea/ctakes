@@ -1323,7 +1323,7 @@ public class DrugMentionAnnotator extends JCasAnnotator_ImplBase
 										NewlineToken nta = (NewlineToken) findStartLF.next();
 
 										// Iterator findSymbols =
-										// FSUtil.getAnnotationsInSpanIterator(jcas,
+										// FSUtil.getAnnotationsIteratorInSpan(jcas,
 										// SymbolToken.type,
 										// nta.getEnd(), sub.getBegin());
 										//					
@@ -2724,19 +2724,19 @@ private int[] getNarrativeSpansContainingGivenSpanType(JCas jcas, int begin, int
 		MedicationMention ne = null;
 		WordToken we = null;
 		// grab iterator over tokens within this chunk
-		Iterator btaItr = FSUtil.getAnnotationsInSpanIterator(jcas,
+		Iterator btaItr = FSUtil.getAnnotationsIteratorInSpan(jcas,
 				BaseToken.type, begin,
 				end+1);
 		// do the same as above for named entities
 		// grab iterator over tokens within this chunk
-		Iterator neItr = FSUtil.getAnnotationsInSpanIterator(jcas,
+		Iterator neItr = FSUtil.getAnnotationsIteratorInSpan(jcas,
 				MedicationMention.type, begin,
 				end+1);
 		// List neTokenList = new ArrayList();
 
 		// do the same as above for word entities
 		// grab iterator over tokens within this chunk
-		Iterator weItr = FSUtil.getAnnotationsInSpanIterator(jcas,
+		Iterator weItr = FSUtil.getAnnotationsIteratorInSpan(jcas,
 				WordToken.type, begin,
 				end+1);
 		List weTokenList = new ArrayList();
@@ -2779,7 +2779,7 @@ private int[] getNarrativeSpansContainingGivenSpanType(JCas jcas, int begin, int
 	 */
 	private int [] findOffsetsInPattern(JCas jcas, int begin, int end, int elementType, int[][] location, boolean highest) {
 		JFSIndexRepository indexes = jcas.getJFSIndexRepository();
-		Iterator neItr = indexes.getAnnotationIndex(elementType).iterator();//FSUtil.getAnnotationsInSpanIterator(jcas, elementType, begin, end);
+		Iterator neItr = indexes.getAnnotationIndex(elementType).iterator();
 		int [] lastLocation =  {-1,-1};
 		boolean wantMuliple = true;
 		if (elementType == StrengthUnitAnnotation.type) {
@@ -2898,7 +2898,7 @@ private int[] getNarrativeSpansContainingGivenSpanType(JCas jcas, int begin, int
 	 */
 	private int findInPattern(JCas jcas, int begin, int end, int elementType, int[][] location) {
 		JFSIndexRepository indexes = jcas.getJFSIndexRepository();
-		Iterator neItr = indexes.getAnnotationIndex(elementType).iterator();//FSUtil.getAnnotationsInSpanIterator(jcas, elementType, begin, end);
+		Iterator neItr = indexes.getAnnotationIndex(elementType).iterator();
 		int [] lastLocation =  {-1,-1};
 		int counter = 0;
 		if (elementType == StrengthUnitAnnotation.type) {

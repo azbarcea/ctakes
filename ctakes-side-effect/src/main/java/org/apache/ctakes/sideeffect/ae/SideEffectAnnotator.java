@@ -260,9 +260,7 @@ public class SideEffectAnnotator extends JCasAnnotator_ImplBase
     		boolean foundDrug = false;
     		
     		//check the same sentence if it contains drug
-    		Iterator neIter = FSUtil.getAnnotationsInSpanIterator(
-    				jcas, IdentifiedAnnotation.type, senSpan[0], senSpan[1]+1);
-    		
+		Iterator neIter = FSUtil.getAnnotationsIteratorInSpan(jcas, IdentifiedAnnotation.type, senSpan[0], senSpan[1]+1);
     		while(neIter.hasNext()) {
     			IdentifiedAnnotation n = (IdentifiedAnnotation) neIter.next();
     			if(n.getTypeID()==1) { //drug    				
@@ -285,9 +283,7 @@ public class SideEffectAnnotator extends JCasAnnotator_ImplBase
     			
     			//only if they are in the same line
     			if(SEUtil.isSpanInSameLine(jcas, previousSenSpan[0], senSpan[1])) {
-    				neIter = FSUtil.getAnnotationsInSpanIterator(jcas, IdentifiedAnnotation.type, 
-    						previousSenSpan[0], previousSenSpan[1]+1);
-
+				neIter = FSUtil.getAnnotationsIteratorInSpan(jcas, IdentifiedAnnotation.type, previousSenSpan[0], previousSenSpan[1]+1);
     				while(neIter.hasNext()) {
     					IdentifiedAnnotation n = (IdentifiedAnnotation) neIter.next();
     					if(n.getTypeID()==1) { //drug
@@ -667,8 +663,7 @@ public class SideEffectAnnotator extends JCasAnnotator_ImplBase
 		if(!pm.mat.find()) return false;
 		
 		//if sideEffectWord is negated return false
-		Iterator neIter = FSUtil.getAnnotationsInSpanIterator(
-				jcas, IdentifiedAnnotation.type, pse.senBegin, pse.senEnd+1);
+		Iterator neIter = FSUtil.getAnnotationsIteratorInSpan(jcas, IdentifiedAnnotation.type, pse.senBegin, pse.senEnd+1);
 		while(neIter.hasNext()) {
 			IdentifiedAnnotation ne = (IdentifiedAnnotation) neIter.next();
 			if(ne.getCoveredText().replace('-',' ').toLowerCase().trim()
@@ -750,8 +745,7 @@ public class SideEffectAnnotator extends JCasAnnotator_ImplBase
         while(saIter.hasNext()) {
         	Segment sa = (Segment) saIter.next();
         	if(sa.getBegin()<pse.ne.getBegin() && sa.getEnd()>pse.ne.getEnd()) {
-        		Iterator ssIter = FSUtil.getAnnotationsInSpanIterator(
-        				jcas, SubSectionAnnotation.type, sa.getBegin(), sa.getEnd());
+			Iterator ssIter = FSUtil.getAnnotationsIteratorInSpan(jcas, SubSectionAnnotation.type, sa.getBegin(), sa.getEnd());
         		while(ssIter.hasNext()) {
         			SubSectionAnnotation ss = (SubSectionAnnotation) ssIter.next();
         			//if(ss.getCoveredText().replaceAll(":","").trim().equalsIgnoreCase("medication")) 
@@ -834,10 +828,8 @@ public class SideEffectAnnotator extends JCasAnnotator_ImplBase
 	 */
 	private String getRegexInput(JCas jcas, PotentialSideEffect pse) {		
 		String str = pse.sentence.toLowerCase();
-		Iterator neIter = FSUtil.getAnnotationsInSpanIterator(
-	    		   jcas, IdentifiedAnnotation.type, pse.senBegin, pse.senEnd+1);
-		
-		//NEs are stored in CAS in order of offsets so using replaceFirst() works
+		Iterator neIter = FSUtil.getAnnotationsIteratorInSpan(jcas, IdentifiedAnnotation.type, pse.senBegin, pse.senEnd+1);
+		// NEs are stored in CAS in order of offsets so using replaceFirst() works
 		while(neIter.hasNext()) {
 			IdentifiedAnnotation nea = (IdentifiedAnnotation) neIter.next();
 			if(nea.getTypeID()==1) {

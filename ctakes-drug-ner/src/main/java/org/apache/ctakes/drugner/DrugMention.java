@@ -578,9 +578,7 @@ public class DrugMention implements DrugModel {
 	}
 
 	private String findEndDateElement(JCas jcas, int beginOffset, int endOffset) {
-
-		Iterator firItr = FSUtil.getAnnotationsInSpanIterator(jcas,
-				DateAnnotation.type, beginOffset, endOffset + 1);
+		Iterator firItr = FSUtil.getAnnotationsIteratorInSpan(jcas, DateAnnotation.type, beginOffset, endOffset + 1);
 		while (firItr.hasNext()) {
 			DateAnnotation da = (DateAnnotation) firItr.next();
 			if (da.getBegin() == beginOffset)
