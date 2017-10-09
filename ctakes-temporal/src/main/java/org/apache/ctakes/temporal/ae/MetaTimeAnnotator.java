@@ -19,6 +19,7 @@
 package org.apache.ctakes.temporal.ae;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,14 +81,23 @@ public class MetaTimeAnnotator extends TemporalSequenceAnnotator_ImplBase {
                       new File(directory, TimeAnnotator.class.getSimpleName()), 
                       TimeAnnotator.class.getSimpleName()));
     builder.add(BackwardsTimeAnnotator.createEnsembleDescription(
-                      new File(directory, BackwardsTimeAnnotator.class.getSimpleName()),
+                      Paths.get(
+                                directory.getAbsolutePath(),
+                                BackwardsTimeAnnotator.class.getSimpleName()
+                      ).toAbsolutePath().toString(),
                       BackwardsTimeAnnotator.class.getSimpleName()));
     builder.add(ConstituencyBasedTimeAnnotator.createEnsembleDescription(
-        new File(directory, ConstituencyBasedTimeAnnotator.class.getSimpleName()),
-        ConstituencyBasedTimeAnnotator.class.getSimpleName()));
+                      Paths.get(
+                              directory.getAbsolutePath(),
+                              ConstituencyBasedTimeAnnotator.class.getSimpleName()
+                      ).toAbsolutePath().toString(),
+                      ConstituencyBasedTimeAnnotator.class.getSimpleName()));
     builder.add(CRFTimeAnnotator.createEnsembleDescription(
-        new File(directory, CRFTimeAnnotator.class.getSimpleName()), 
-        CRFTimeAnnotator.class.getSimpleName()));
+                      Paths.get(
+                              directory.getAbsolutePath(),
+                              CRFTimeAnnotator.class.getSimpleName()
+                      ).toAbsolutePath().toString(),
+                      CRFTimeAnnotator.class.getSimpleName()));
     
     builder.add(AnalysisEngineFactory.createEngineDescription(MetaTimeAnnotator.class,
           CleartkSequenceAnnotator.PARAM_IS_TRAINING,
@@ -109,13 +119,22 @@ public class MetaTimeAnnotator extends TemporalSequenceAnnotator_ImplBase {
                       new File(directory, TimeAnnotator.class.getSimpleName()),
                       TimeAnnotator.class.getSimpleName()));
     builder.add(BackwardsTimeAnnotator.createEnsembleDescription(
-                      new File(directory, BackwardsTimeAnnotator.class.getSimpleName()),
+                      Paths.get(
+                              directory.getAbsolutePath(),
+                              BackwardsTimeAnnotator.class.getSimpleName()
+                      ).toAbsolutePath().toString(),
                       BackwardsTimeAnnotator.class.getSimpleName()));
     builder.add(ConstituencyBasedTimeAnnotator.createEnsembleDescription(
-                      new File(directory, ConstituencyBasedTimeAnnotator.class.getSimpleName()),
+                      Paths.get(
+                              directory.getAbsolutePath(),
+                              ConstituencyBasedTimeAnnotator.class.getSimpleName()
+                      ).toAbsolutePath().toString(),
                       ConstituencyBasedTimeAnnotator.class.getSimpleName()));
     builder.add(CRFTimeAnnotator.createEnsembleDescription(
-                      new File(directory, CRFTimeAnnotator.class.getSimpleName()), 
+                      Paths.get(
+                              directory.getAbsolutePath(),
+                              CRFTimeAnnotator.class.getSimpleName()
+                      ).toAbsolutePath().toString(),
                       CRFTimeAnnotator.class.getSimpleName()));
     builder.add(AnalysisEngineFactory.createEngineDescription(
         MetaTimeAnnotator.class,
