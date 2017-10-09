@@ -478,7 +478,9 @@ EvaluationOfTemporalRelations_ImplBase{
 
 //		aggregateBuilder.add(AnalysisEngineFactory.createEngineDescription(RemoveRelations.class));
 		//annotate on system-generated events, for event-time relations
-		aggregateBuilder.add(EventTimeSelfRelationAnnotator.createEngineDescription(new File(directory,"event-time")));
+		aggregateBuilder.add(EventTimeSelfRelationAnnotator.createEngineDescription(
+				Paths.get(directory.getAbsolutePath(),"event-time").toAbsolutePath().toString())
+		);
 
 		//		//re-train:
 		//overwrite system-generated relations by gold temporal relations:
