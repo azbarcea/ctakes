@@ -287,7 +287,7 @@ public class EvaluationOfTimeSpans extends EvaluationOfAnnotationSpans_ImplBase 
 		if(MetaTimeAnnotator.class.isAssignableFrom(this.annotatorClass)){
 			return MetaTimeAnnotator.getAnnotatorDescription(directory);
 		}else if("org.apache.ctakes.temporal.ae.TimeAnnotator".equals(this.annotatorClass.getName() )){
-			return TimeAnnotator.createAnnotatorDescription(this.getModelDirectory(directory));
+			return TimeAnnotator.createAnnotatorDescription(this.getModelDirectory(directory).getAbsolutePath());
 		}
 		return AnalysisEngineFactory.createEngineDescription(
 				this.annotatorClass,
