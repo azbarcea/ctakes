@@ -28,11 +28,7 @@ import org.apache.ctakes.utils.struct.CounterMap;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.index.CorruptIndexException;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.Term;
-import org.apache.lucene.index.Terms;
-import org.apache.lucene.index.TermsEnum;
+import org.apache.lucene.index.*;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
@@ -53,6 +49,7 @@ import org.apache.lucene.util.Version;
 public class WikiIndex {
 
 	public static int defaultMaxHits = 10;
+	// TODO: remove dependency of a hardcoded path
 	public static String defaultIndexPath = "/home/dima/i2b2/wiki-index/index_nometa";
 	public static String defaultSearchField = "text";
 
@@ -89,7 +86,7 @@ public class WikiIndex {
   
   public void initialize() throws CorruptIndexException, IOException {
 
-  	indexReader = IndexReader.open(FSDirectory.open(new File(indexPath)));
+	indexReader = DirectoryReader.open(FSDirectory.open(new File(indexPath)));
   	numDocs = indexReader.numDocs();
   	indexSearcher = new IndexSearcher(indexReader);
   	standardAnalyzer = new StandardAnalyzer(Version.LUCENE_40);
