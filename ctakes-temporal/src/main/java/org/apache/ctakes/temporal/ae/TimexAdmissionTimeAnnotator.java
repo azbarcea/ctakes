@@ -75,7 +75,7 @@ public class TimexAdmissionTimeAnnotator extends CleartkAnnotator<String> {
 	public static AnalysisEngineDescription createDataWriterDescription(
 			Class<? extends DataWriter<String>> dataWriterClass,
 					File outputDirectory) throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(
+		return AnalysisEngineFactory.createEngineDescription(
 				TimexAdmissionTimeAnnotator.class,
 				CleartkAnnotator.PARAM_IS_TRAINING,
 				true,
@@ -87,7 +87,7 @@ public class TimexAdmissionTimeAnnotator extends CleartkAnnotator<String> {
 
 	public static AnalysisEngineDescription createAnnotatorDescription(String modelPath)
 			throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(
+		return AnalysisEngineFactory.createEngineDescription(
 				TimexAdmissionTimeAnnotator.class,
 				CleartkAnnotator.PARAM_IS_TRAINING,
 				false,
