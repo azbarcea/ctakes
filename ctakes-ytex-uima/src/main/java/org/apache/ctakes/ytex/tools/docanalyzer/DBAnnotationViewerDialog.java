@@ -439,7 +439,7 @@ public class DBAnnotationViewerDialog extends JDialog implements ActionListener 
         dialog.getContentPane().add(viewer);
         dialog.setSize(850, 630);
         dialog.pack();
-        dialog.show();
+        dialog.setVisible(true);
       } else {
         CAS defaultView = cas.getView(CAS.NAME_DEFAULT_SOFA);
         if (defaultView.getDocumentText() == null) {
