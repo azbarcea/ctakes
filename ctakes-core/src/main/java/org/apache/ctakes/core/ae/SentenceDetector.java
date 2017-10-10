@@ -309,9 +309,11 @@ public class SentenceDetector extends JCasAnnotator_ImplBase {
 		  // Abbreviations dictionary
 		  // TODO: Actually import a Dictionary of abbreviations
 		  Dictionary dict = new Dictionary();
+		  SentenceDetectorFactory sdFactory = new SentenceDetectorFactory("en", true, dict, null);
 
 		  try {
-		    mod = SentenceDetectorME.train("en", sampleStream, true, dict, mlParams);
+		    // TODO: language should be generic (i.e. params.getLang() )
+		    mod = SentenceDetectorME.train("en", sampleStream, sdFactory, mlParams);
 		  } finally {
 			  sampleStream.close();
 		  }
