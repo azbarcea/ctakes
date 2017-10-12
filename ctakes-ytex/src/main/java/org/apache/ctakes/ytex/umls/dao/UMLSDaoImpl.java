@@ -141,12 +141,12 @@ public class UMLSDaoImpl implements UMLSDao {
 	public String getLastAui() {
 		Query q = sessionFactory.getCurrentSession()
 				.getNamedQuery("getLastAui");
+		log.debug(String.format("Executing SQL: %s", q.getQueryString()));
 		String aui = (String) q.uniqueResult();
 		return aui;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public HashSet<Integer> getRXNORMCuis() {
 		HashSet<Integer> cuis = new HashSet();
 		for (String cui : (List<String>) sessionFactory.getCurrentSession()

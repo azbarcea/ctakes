@@ -25,12 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -59,11 +54,19 @@ import gov.nih.nlm.nls.lvg.Api.LvgCmdApi;
  * 
  */
 public class SetupAuiFirstWord {
+
 	private static final Log log = LogFactory.getLog(SetupAuiFirstWord.class);
+
+	private static final String LVG_PROPERTIES_PATH = "org/apache/ctakes/lvg/data/config/lvg.properties";
+	private static final String LVG_ANNOTATOR_PATH = "ctakes-lvg/desc/analysis_engine/LvgAnnotator.xml";
+	private static final String LVG_ANNOTATOR_PATH2 = "../ctakes-lvg/desc/analysis_engine/LvgAnnotator.xml";
+
+	public static final String EXCLUSION_SET = "ExclusionSet";
+
 	// private static final Pattern nonWord = Pattern.compile("\\W");
-	private TokenizerPTB tokenizer;
+	private TokenizerPTB tokenizer = new TokenizerPTB();
+	private Set<String> exclusionSet = new HashSet<>();
 	private LvgCmdApi lvgCmd;
-	private Set<String> exclusionSet = null;
 
 	/**
 	 * Initialize tokenizer using the hyphen map from
@@ -81,42 +84,71 @@ public class SetupAuiFirstWord {
 	 * @throws Exception
 	 */
 	public SetupAuiFirstWord() throws Exception {
-		initTokenizer();
-		// initialize exclusion set
 		initExclusionSet();
 		initLvg();
 	}
 
 	/**
-	 * initialize lvgCmd
+	 * To be used only from UTest.
+	 *
+	 * @return exclusionSet
 	 */
-	private void initLvg() {
-		// See
-		// http://lexsrv2.nlm.nih.gov/SPECIALIST/Projects/lvg/2008/docs/userDoc/index.html
-		// See
-		// http://lexsrv3.nlm.nih.gov/SPECIALIST/Projects/lvg/2008/docs/designDoc/UDF/flow/index.html
-		// Lower-case the terms and then uninflect
-		// f = using flow components (in this order)
-		// l = lower case
-		// b = uninflect a term
-		try {
-			URL uri = this.getClass().getClassLoader()
-					.getResource("org/apache/ctakes/lvg/data/config/lvg.properties");
-			if (log.isInfoEnabled())
-				log.info("loading lvg.properties from:" + uri.getPath());
-			File f = new File(uri.getPath());
-			String configDir = f.getParentFile().getAbsolutePath();
-			String lvgDir = configDir.substring(0, configDir.length()
-					- "data/config".length());
-			System.setProperty("user.dir", lvgDir);
-			lvgCmd = new LvgCmdApi("-f:l:b", f.getAbsolutePath());
-		} catch (Exception e) {
-			log.warn(
-					"could not initialize lvg - will not create a stemmed dictionary.",
-					e);
-		}
+	final Collection<String> getExclusionList() {
+		return exclusionSet;
 	}
 
+	/**
+	 * To be used only from UTest.
+	 *
+	 * @return LvgCmdApi
+	 */
+	final LvgCmdApi getLvgCmd() {
+		return lvgCmd;
+	}
+
+	/**
+	 * Initialize LVG
+	 *
+	 * // TODO: There is no need for uri, f, and folder arithmetic. Consider refactor.
+	 */
+	private void initLvg() {
+		// See http://lexsrv2.nlm.nih.gov/SPECIALIST/Projects/lvg/2008/docs/userDoc/index.html
+		// See http://lexsrv3.nlm.nih.gov/SPECIALIST/Projects/lvg/2008/docs/designDoc/UDF/flow/index.html
+		// Lower-case the terms and then uninflect
+		//      f = using flow components (in this order)
+		//      l = lower case
+		//      b = uninflect a term
+		URL uri = this.getClass().getClassLoader().getResource(LVG_PROPERTIES_PATH);
+		log.info(String.format("loading lvg.properties from: %s", uri.getPath()));
+
+		File f = new File(uri.getPath());
+		String configDir = f.getParentFile().getAbsolutePath();
+
+		String lvgDir = configDir.substring(0, configDir.length() - "data/config".length());
+		log.info(String.format("Using lvgDir %s", lvgDir));
+		System.setProperty("user.dir", lvgDir);
+		log.info(String.format("Loading lvgCmd from ", f.getAbsolutePath()));
+		lvgCmd = new LvgCmdApi("-f:l:b", f.getAbsolutePath());
+	}
+
+
+	/**
+	 * Helper function to retrieve LvgAnnotator:InputStream
+	 *
+	 */
+	private final InputStream getLvgAnnotatorInputStream() {
+		InputStream is = SetupAuiFirstWord.class.getResourceAsStream(LVG_ANNOTATOR_PATH);
+		if (is == null) {
+			log.warn(String.format("classpath:%s not available, attempting to load from file system", LVG_ANNOTATOR_PATH));
+			File f = new File(LVG_ANNOTATOR_PATH2);
+			try {
+				is = new BufferedInputStream(new FileInputStream(f));
+			} catch (FileNotFoundException e) {
+				log.warn(String.format("classpath:%s not available, using empty exclusion set", LVG_ANNOTATOR_PATH2));
+			}
+		}
+		return is;
+	}
 	/**
 	 * initialize lvg exclusion set
 	 * 
@@ -124,61 +156,43 @@ public class SetupAuiFirstWord {
 	 * @throws SAXException
 	 * @throws IOException
 	 */
-	private void initExclusionSet() throws ParserConfigurationException,
-			SAXException, IOException {
-		this.exclusionSet = new HashSet<String>();
+	private void initExclusionSet() throws ParserConfigurationException, SAXException, IOException {
 		InputStream isLvgAnno = null;
-		try {
-			isLvgAnno = this
-					.getClass()
-					.getClassLoader()
-					.getResourceAsStream(
-							"ctakes-lvg/desc/analysis_engine/LvgAnnotator.xml");
-			if(isLvgAnno == null) {
-				log.warn("classpath:ctakes-lvg/desc/analysis_engine/LvgAnnotator.xml not available, attempting to load from file system");
-				File f = new File("../ctakes-lvg/desc/analysis_engine/LvgAnnotator.xml");
-				if(f.exists())
-					isLvgAnno = new BufferedInputStream(new FileInputStream(f));
-			} 
-			if (isLvgAnno == null) {
-				log.warn("ctakes-lvg/desc/analysis_engine/LvgAnnotator.xml not available, using empty exclusion set");
-			} else {
-				DocumentBuilderFactory dbFactory = DocumentBuilderFactory
-						.newInstance();
-				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		isLvgAnno = getLvgAnnotatorInputStream();
+		if (isLvgAnno != null) {
+			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			try {
 				Document doc = dBuilder.parse(isLvgAnno);
 				NodeList nList = doc.getElementsByTagName("nameValuePair");
 				for (int i = 0; i < nList.getLength(); i++) {
 					Element e = (Element) nList.item(i);
-					String name = e.getElementsByTagName("name").item(0)
-							.getChildNodes().item(0).getNodeValue();
-					if ("ExclusionSet".equals(name)) {
+					// TODO: possible NullPointerException when no Elements (index: 0) - happy path
+					String name = e.getElementsByTagName("name").item(0).getChildNodes().item(0).getNodeValue();
+					if (EXCLUSION_SET.equals(name)) {
 						NodeList nListEx = e.getElementsByTagName("string");
 						for (int j = 0; j < nListEx.getLength(); j++) {
-							exclusionSet.add(nListEx.item(j).getChildNodes()
-									.item(0).getNodeValue());
+							String nodeValue = nListEx.item(j).getChildNodes().item(0).getNodeValue();
+							log.debug(String.format("Adding to %s:", EXCLUSION_SET, nodeValue));
+							exclusionSet.add(nodeValue);
 						}
 					}
 				}
-			}
-		} finally {
-			if (isLvgAnno != null)
+			} finally {
 				isLvgAnno.close();
+			}
 		}
 	}
 
 	/**
 	 * initialize the tokenizer. loads the hypenated word list.
-	 * 
-	 * @throws FileNotFoundException
-	 * @throws IOException
 	 */
-	private void initTokenizer() throws FileNotFoundException, IOException {
+	private void initTokenizer() {
 		this.tokenizer = new TokenizerPTB();
 	}
 
 	/**
-	 * @param args
+	 *
+	 * @param args - not used
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
@@ -186,59 +200,73 @@ public class SetupAuiFirstWord {
 		setupFword.setupAuiFirstWord();
 	}
 
-	public void setupAuiFirstWord() {
-		UMLSDao umlsDao = KernelContextHolder.getApplicationContext().getBean(
-				UMLSDao.class);
-		TransactionTemplate t = new TransactionTemplate(KernelContextHolder
-				.getApplicationContext().getBean(
-						PlatformTransactionManager.class));
+	private final UMLSDao getUMLSDaoBean() {
+		return KernelContextHolder.getApplicationContext().getBean(UMLSDao.class);
+	}
+
+	private final PlatformTransactionManager getPTMBean() {
+		return KernelContextHolder.getApplicationContext().getBean(PlatformTransactionManager.class);
+	}
+
+	private final TransactionTemplate createTransactionTemplate() {
+		TransactionTemplate t = new TransactionTemplate( getPTMBean() );
 		t.setPropagationBehavior(TransactionTemplate.PROPAGATION_REQUIRES_NEW);
+		return t;
+	}
+
+	/**
+	 * Main method
+	 */
+	public void setupAuiFirstWord() {
+		UMLSDao umlsDao = getUMLSDaoBean();
+		TransactionTemplate t = createTransactionTemplate();
+
+		// TODO: investigate if needed to delete all records
 		// delete all records
 		// umlsDao.deleteAuiFirstWord();
 
-		// get all auis and their strings
-		// restart processing after the last aui we processed.
-		// if this is null, then just process everything
+		// 1. get all AUIs and their strings
+		// 2. restart processing after the last AUI we processed.
+		// if lastAUI is null, then just process everything
 		String lastAui = umlsDao.getLastAui();
+
 		List<Object[]> listAuiStr = null;
 		do {
 			// get the next 10k auis
 			listAuiStr = umlsDao.getAllAuiStr(lastAui);
 			// put the aui - fword pairs in a list
-			List<UmlsAuiFirstWord> listFword = new ArrayList<UmlsAuiFirstWord>(
-					1000);
+			List<UmlsAuiFirstWord> listFword = new ArrayList<UmlsAuiFirstWord>(1000);
 			for (Object[] auiStr : listAuiStr) {
 				String aui = (String) auiStr[0];
 				String str = (String) auiStr[1];
+				// save lastAUI processed
 				lastAui = aui;
+
 				if (str.length() < 200) {
 					try {
 						UmlsAuiFirstWord fw = this.tokenizeStr(aui, str);
-						if (fw == null)
-							log.error("Error tokenizing aui=" + aui + ", str="
-									+ str);
-						else if (fw.getFword().length() > 70)
-							log.debug("fword too long: aui=" + aui + ", str="
-									+ fw.getFword());
-						else if (fw.getTokenizedStr().length() > 250)
-							log.debug("string too long: aui=" + aui + ", str="
-									+ str);
-						else {
-							if (log.isDebugEnabled())
-								log.debug("aui=" + aui + ", fw=" + fw);
+						// TODO: Too many if/else. Consider refactor.
+						if (fw == null) {
+							log.error(String.format("Error tokenizing aui=%s, str=%s", aui, str));
+						} else if (fw.getFword().length() > 70) {
+							log.debug(String.format("fword too long: aui=%s, str=%s", aui, fw.getFword()));
+						} else if (fw.getTokenizedStr().length() > 250) {
+							log.debug(String.format("String too long: aui=%s, str=%s",  aui, str));
+						} else {
+							log.debug(String.format("aui=%s, fw=%s", aui, fw));
 							listFword.add(fw);
 						}
 					} catch (Exception e) {
-						log.error("Error tokenizing aui=" + aui + ", str="
-								+ str, e);
+						log.error(String.format("Error tokenizing aui=%s, str=%s", aui, str), e);
 					}
 				} else {
-					log.debug("Skipping aui because str to long: aui=" + aui
-							+ ", str=" + str);
+					log.debug(String.format("Skipping aui because str to long: aui=%s, str=%s",  aui, str));
 				}
 			}
 			// batch insert
 			if (listFword.size() > 0) {
+				// HACK: Shouldn't update umlsDao internal state and not reuse it later. possible BUG
+				//  inserted at the end of the while loop, retrieved at the beginning fo the while loop
 				umlsDao.insertAuiFirstWord(listFword);
 				log.info("inserted " + listFword.size() + " rows");
 			}
@@ -256,8 +284,7 @@ public class SetupAuiFirstWord {
 	 * @return
 	 * @throws Exception
 	 */
-	public UmlsAuiFirstWord tokenizeStr(String aui, String str)
-			throws Exception {
+	public UmlsAuiFirstWord tokenizeStr(String aui, String str) throws Exception {
 		List<?> list = tokenizer.tokenize(str);
 		Iterator<?> tokenItr = list.iterator();
 		int tCount = 0;
