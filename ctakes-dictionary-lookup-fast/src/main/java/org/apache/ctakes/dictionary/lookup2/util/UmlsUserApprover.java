@@ -18,6 +18,7 @@
  */
 package org.apache.ctakes.dictionary.lookup2.util;
 
+import org.apache.ctakes.core.ae.UmlsEnvironmentConfiguration;
 import org.apache.ctakes.core.util.DotLogger;
 import org.apache.ctakes.utils.env.EnvironmentVariable;
 import org.apache.log4j.Logger;
@@ -58,12 +59,6 @@ public enum UmlsUserApprover {
    public final static String USER_PARAM = "umlsUser";
    public final static String PASS_PARAM = "umlsPass";
 
-   // environment, matches old
-   private final static String UMLSADDR_PARAM = "ctakes.umlsaddr";
-   private final static String UMLSVENDOR_PARAM = "ctakes.umlsvendor";
-   final static String UMLSUSER_PARAM = "ctakes.umlsuser";
-   final static String UMLSPW_PARAM = "ctakes.umlspw";
-
    static final private Logger LOGGER = Logger.getLogger( "UmlsUserApprover" );
 
    static final private String CHANGEME = "CHANGEME";
@@ -80,22 +75,22 @@ public enum UmlsUserApprover {
     * @return true if the server at umlsaddr approves of the vendor, user, password combination
     */
    public boolean isValidUMLSUser( final UimaContext uimaContext, final Properties properties ) {
-      String umlsUrl = EnvironmentVariable.getEnv( UMLSADDR_PARAM, uimaContext );
+      String umlsUrl = EnvironmentVariable.getEnv( UmlsEnvironmentConfiguration.URL.toString(), uimaContext );
       if ( umlsUrl == null || umlsUrl.equals( EnvironmentVariable.NOT_PRESENT ) ) {
          umlsUrl = properties.getProperty( URL_PARAM );
       }
-      String vendor = EnvironmentVariable.getEnv( UMLSVENDOR_PARAM, uimaContext );
+      String vendor = EnvironmentVariable.getEnv( UmlsEnvironmentConfiguration.VENDOR.toString(), uimaContext );
       if ( vendor == null || vendor.equals( EnvironmentVariable.NOT_PRESENT ) ) {
          vendor = properties.getProperty( VENDOR_PARAM );
       }
-      String user = EnvironmentVariable.getEnv( UMLSUSER_PARAM, uimaContext );
+      String user = EnvironmentVariable.getEnv( UmlsEnvironmentConfiguration.USER.toString(), uimaContext );
       if ( user == null || user.equals( EnvironmentVariable.NOT_PRESENT ) || user.equals( CHANGEME ) || user.equals( CHANGE_ME ) ) {
          user = EnvironmentVariable.getEnv( USER_PARAM, uimaContext );
          if ( user == null || user.equals( EnvironmentVariable.NOT_PRESENT ) || user.equals( CHANGEME ) || user.equals( CHANGE_ME ) ) {
             user = properties.getProperty( USER_PARAM );
          }
       }
-      String pass = EnvironmentVariable.getEnv( UMLSPW_PARAM, uimaContext );
+      String pass = EnvironmentVariable.getEnv( UmlsEnvironmentConfiguration.PASSWORD.toString(), uimaContext );
       if ( pass == null || pass.equals( EnvironmentVariable.NOT_PRESENT ) || pass.equals( CHANGEME ) || pass.equals( CHANGE_ME ) ) {
          pass = EnvironmentVariable.getEnv( PASS_PARAM, uimaContext );
          if ( pass == null || pass.equals( EnvironmentVariable.NOT_PRESENT ) || pass.equals( CHANGEME ) || pass.equals( CHANGE_ME ) ) {
@@ -189,17 +184,16 @@ public enum UmlsUserApprover {
       }
    }
 
+   static private String createLogMessage(String cliOption, String property, UmlsEnvironmentConfiguration envConfig) {
+      return String.format(" Verify that you are setting command-line option %s, or ctakes property %s, or environment variable %s properly.",
+              cliOption, property, envConfig);
+   }
 
    static private void logCheckUser() {
-      LOGGER.error( "   Verify that you are setting command-line option " + USER_CLI
-            + " or ctakes property " + USER_PARAM
-            + " or environment variable " + UMLSUSER_PARAM + " properly." );
+      LOGGER.error( createLogMessage(USER_CLI, USER_PARAM, UmlsEnvironmentConfiguration.USER) );
    }
 
    static private void logCheckPass() {
-      LOGGER.error( "   Verify that you are setting command-line option " + PASS_CLI
-            + " or ctakes property " + PASS_PARAM
-            + " or environment variable " + UMLSPW_PARAM + " properly." );
+      LOGGER.error( createLogMessage(PASS_CLI, PASS_PARAM, UmlsEnvironmentConfiguration.PASSWORD) );
    }
-
 }

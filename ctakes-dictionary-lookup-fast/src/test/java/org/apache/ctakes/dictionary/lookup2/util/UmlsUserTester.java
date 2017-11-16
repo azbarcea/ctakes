@@ -1,10 +1,8 @@
 package org.apache.ctakes.dictionary.lookup2.util;
 
+import org.apache.ctakes.core.ae.UmlsEnvironmentConfiguration;
 import org.apache.ctakes.utils.env.EnvironmentVariable;
 import org.apache.log4j.Logger;
-
-import static org.apache.ctakes.dictionary.lookup2.util.UmlsUserApprover.UMLSPW_PARAM;
-import static org.apache.ctakes.dictionary.lookup2.util.UmlsUserApprover.UMLSUSER_PARAM;
 
 /**
  * @author SPF , chip-nlp
@@ -19,11 +17,11 @@ final public class UmlsUserTester {
    }
 
    static public boolean canTestUmlsUser() {
-      String user = EnvironmentVariable.getEnv( UMLSUSER_PARAM, null );
+      String user = EnvironmentVariable.getEnv(UmlsEnvironmentConfiguration.USER.toString());
       if ( user == null || user.equals( EnvironmentVariable.NOT_PRESENT ) ) {
          return false;
       }
-      String pass = EnvironmentVariable.getEnv( UMLSPW_PARAM, null );
+      String pass = EnvironmentVariable.getEnv( UmlsEnvironmentConfiguration.PASSWORD.toString());
       return pass != null && !pass.equals( EnvironmentVariable.NOT_PRESENT );
    }
 

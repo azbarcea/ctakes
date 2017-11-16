@@ -19,6 +19,7 @@
 package org.apache.ctakes.dictionary.lookup.ae;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.ctakes.core.ae.UmlsEnvironmentConfiguration;
 import org.apache.ctakes.core.pipeline.PipeBitInfo;
 import org.apache.ctakes.core.resource.FileResourceImpl;
 import org.apache.ctakes.core.resource.JdbcConnectionResourceImpl;
@@ -57,10 +58,6 @@ public class UmlsDictionaryLookupAnnotator extends DictionaryLookupAnnotator {
     * Performs a check for user's UMLS licence at init time via their RESTful API
     * User's will need to configure their UMLS username/password in their config
     */
-   public final static String UMLSADDR_PARAM = "ctakes.umlsaddr";
-   public final static String UMLSVENDOR_PARAM = "ctakes.umlsvendor";
-   public final static String UMLSUSER_PARAM = "ctakes.umlsuser";
-   public final static String UMLSPW_PARAM = "ctakes.umlspw";
 
    private Logger iv_logger = Logger.getLogger( getClass().getName() );
 
@@ -75,12 +72,12 @@ public class UmlsDictionaryLookupAnnotator extends DictionaryLookupAnnotator {
       super.initialize( aContext );
 
       try {
-         UMLSAddr = EnvironmentVariable.getEnv( UMLSADDR_PARAM, aContext );
-         UMLSVendor = EnvironmentVariable.getEnv( UMLSVENDOR_PARAM, aContext );
-         UMLSUser = EnvironmentVariable.getEnv( UMLSUSER_PARAM, aContext );
-         UMLSPW = EnvironmentVariable.getEnv( UMLSPW_PARAM, aContext );
+         UMLSAddr = EnvironmentVariable.getEnv(UmlsEnvironmentConfiguration.URL.toString(), aContext );
+         UMLSVendor = EnvironmentVariable.getEnv( UmlsEnvironmentConfiguration.VENDOR.toString(), aContext );
+         UMLSUser = EnvironmentVariable.getEnv( UmlsEnvironmentConfiguration.USER.toString(), aContext );
+         UMLSPW = EnvironmentVariable.getEnv( UmlsEnvironmentConfiguration.PASSWORD.toString(), aContext );
 
-         iv_logger.info( "Using " + UMLSADDR_PARAM + ": " + UMLSAddr + ": " + UMLSUser );
+         iv_logger.info( "Using " + UmlsEnvironmentConfiguration.URL + ": " + UMLSAddr + ": " + UMLSUser );
          if ( !isValidUMLSUser( UMLSAddr, UMLSVendor, UMLSUser, UMLSPW ) ) {
             iv_logger.error(
                   "Error: Invalid UMLS License.  A UMLS License is required to use the UMLS dictionary lookup. \n" +
@@ -133,9 +130,9 @@ public class UmlsDictionaryLookupAnnotator extends DictionaryLookupAnnotator {
           throw new RuntimeException("Error copying temporary InpuStream org/apache/ctakes/dictionary/lookup/LookupDesc_Db.xml to /tmp/LookupDesc_Db.xml.", e);
       }
       return AnalysisEngineFactory.createEngineDescription( UmlsDictionaryLookupAnnotator.class,
-             UMLSADDR_PARAM,
+             UmlsEnvironmentConfiguration.URL,
              "https://uts-ws.nlm.nih.gov/restful/isValidUMLSUser",
-             UMLSVENDOR_PARAM,
+             UmlsEnvironmentConfiguration.VENDOR,
              "NLM-6515182895",
              "LookupDescriptor",
              ExternalResourceFactory.createExternalResourceDescription(

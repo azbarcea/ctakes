@@ -18,6 +18,7 @@
  */
 package org.apache.ctakes.dictionary.lookup.ae;
 
+import org.apache.ctakes.core.ae.UmlsEnvironmentConfiguration;
 import org.apache.ctakes.utils.env.EnvironmentVariable;
 import org.apache.log4j.Logger;
 import org.apache.uima.UimaContext;
@@ -37,23 +38,17 @@ import java.net.URLEncoder;
  */
 public class ThreadedUmlsDictionaryLookupAnnotator extends ThreadedDictionaryLookupAnnotator {
 
-   private final static String UMLSADDR_PARAM = "ctakes.umlsaddr";
-   private final static String UMLSVENDOR_PARAM = "ctakes.umlsvendor";
-   private final static String UMLSUSER_PARAM = "ctakes.umlsuser";
-   private final static String UMLSPW_PARAM = "ctakes.umlspw";
-   static final private Logger LOGGER = Logger.getLogger( "ThreadedUmlsDictionaryLookupAnnotator" );
-
-   final private Logger _logger = Logger.getLogger( getClass().getName() );
-
+   // TODO: use consistent variable names (_logger vs LOGGER vs logger)
+   static final private Logger _logger = Logger.getLogger( ThreadedUmlsDictionaryLookupAnnotator.class );
 
    @Override
    public void initialize( final UimaContext aContext ) throws ResourceInitializationException {
       super.initialize( aContext );
-      final String umlsAddress = EnvironmentVariable.getEnv( UMLSADDR_PARAM, aContext );
-      final String umlsVendor = EnvironmentVariable.getEnv( UMLSVENDOR_PARAM, aContext );
-      final String umlsUser = EnvironmentVariable.getEnv( UMLSUSER_PARAM, aContext );
-      final String umlsPassword = EnvironmentVariable.getEnv( UMLSPW_PARAM, aContext );
-      _logger.info( "Using " + UMLSADDR_PARAM + ": " + umlsAddress + ": " + umlsUser );
+      final String umlsAddress = EnvironmentVariable.getEnv(UmlsEnvironmentConfiguration.URL.toString(), aContext );
+      final String umlsVendor = EnvironmentVariable.getEnv( UmlsEnvironmentConfiguration.VENDOR.toString(), aContext );
+      final String umlsUser = EnvironmentVariable.getEnv( UmlsEnvironmentConfiguration.USER.toString(), aContext );
+      final String umlsPassword = EnvironmentVariable.getEnv( UmlsEnvironmentConfiguration.PASSWORD.toString(), aContext );
+      _logger.info( "Using " + UmlsEnvironmentConfiguration.URL + ": " + umlsAddress + ": " + umlsUser );
       if ( !isValidUMLSUser( umlsAddress, umlsVendor, umlsUser, umlsPassword ) ) {
          _logger.error( "Error: Invalid UMLS License.  " +
                         "A UMLS License is required to use the UMLS dictionary lookup. \n" +
@@ -72,7 +67,7 @@ public class ThreadedUmlsDictionaryLookupAnnotator extends ThreadedDictionaryLoo
          data += "&" + URLEncoder.encode( "user", "UTF-8" ) + "=" + URLEncoder.encode( username, "UTF-8" );
          data += "&" + URLEncoder.encode( "password", "UTF-8" ) + "=" + URLEncoder.encode( password, "UTF-8" );
       } catch ( UnsupportedEncodingException unseE ) {
-         LOGGER.error( "Could not encode URL for " + username + " with vendor license " + vendor );
+         _logger.error( "Could not encode URL for " + username + " with vendor license " + vendor );
          return false;
       }
       try {
@@ -99,7 +94,7 @@ public class ThreadedUmlsDictionaryLookupAnnotator extends ThreadedDictionaryLoo
             return result;
          }
       } catch ( IOException ioE ) {
-         LOGGER.error( ioE.getMessage() );
+         _logger.error( ioE.getMessage() );
          return false;
       }
    }
