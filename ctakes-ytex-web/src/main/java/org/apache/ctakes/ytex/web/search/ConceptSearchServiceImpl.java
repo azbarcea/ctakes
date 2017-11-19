@@ -32,7 +32,7 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 public class ConceptSearchServiceImpl implements ConceptSearchService,
 		InitializingBean {
@@ -55,7 +55,7 @@ public class ConceptSearchServiceImpl implements ConceptSearchService,
 	private DataSource dataSource;
 	private String fwordToConceptIdQuery;
 
-	private SimpleJdbcTemplate jdbcTemplate;
+	private JdbcTemplate jdbcTemplate;
 
 	private Properties searchProperties;
 	private Properties ytexProperties;
@@ -157,7 +157,7 @@ public class ConceptSearchServiceImpl implements ConceptSearchService,
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
-		this.jdbcTemplate = new SimpleJdbcTemplate(dataSource);
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
 	public void setSearchProperties(Properties searchProperties) {

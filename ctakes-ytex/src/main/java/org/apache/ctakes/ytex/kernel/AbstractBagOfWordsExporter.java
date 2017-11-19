@@ -38,7 +38,6 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowCallbackHandler;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -46,7 +45,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 public class AbstractBagOfWordsExporter {
 
-	protected SimpleJdbcTemplate simpleJdbcTemplate;
 	protected JdbcTemplate jdbcTemplate;
 	protected PlatformTransactionManager transactionManager;
 	protected TransactionTemplate txNew;
@@ -68,7 +66,6 @@ public class AbstractBagOfWordsExporter {
 
 	public void setDataSource(DataSource ds) {
 		this.jdbcTemplate = new JdbcTemplate(ds);
-		this.simpleJdbcTemplate = new SimpleJdbcTemplate(ds);
 	}
 
 	public DataSource getDataSource(DataSource ds) {

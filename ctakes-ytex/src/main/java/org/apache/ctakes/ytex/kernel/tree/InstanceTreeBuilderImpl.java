@@ -37,11 +37,10 @@ import javax.sql.DataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 
 public class InstanceTreeBuilderImpl implements InstanceTreeBuilder {
 	static final Log log = LogFactory.getLog(InstanceTreeBuilderImpl.class);
-	SimpleJdbcTemplate simpleJdbcTemplate;
+	JdbcTemplate jdbcTemplate;
 	private DataSource dataSource;
 
 	public DataSource getDataSource() {
@@ -50,7 +49,7 @@ public class InstanceTreeBuilderImpl implements InstanceTreeBuilder {
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
-		this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
 	Node nodeFromRow(NodeMappingInfo nodeInfo, Map<String, Object> nodeValues) {
@@ -146,7 +145,7 @@ public class InstanceTreeBuilderImpl implements InstanceTreeBuilder {
 			QueryMappingInfo qInfo, Map<NodeKey, Node> nodeKeyMap) {
 		Node[] currentPath = new Node[qInfo.getNodeTypes().size()];
 		Map<Long, Node> instanceMap = new HashMap<Long, Node>();
-		List<Map<String, Object>> rowData = simpleJdbcTemplate.queryForList(
+		List<Map<String, Object>> rowData = jdbcTemplate.queryForList(
 				qInfo.getQuery(), qInfo.getQueryArgs());
 		for (Map<String, Object> row : rowData) {
 			for (int i = 0; i < qInfo.getNodeTypes().size(); i++) {
@@ -180,7 +179,7 @@ public class InstanceTreeBuilderImpl implements InstanceTreeBuilder {
 	public void addChildrenToNodes(Map<NodeKey, Node> nodeKeyMap,
 			QueryMappingInfo qInfo) {
 		// run query
-		List<Map<String, Object>> rowData = simpleJdbcTemplate.queryForList(
+		List<Map<String, Object>> rowData = jdbcTemplate.queryForList(
 				qInfo.getQuery(), qInfo.getQueryArgs());
 		// iterate through rows, adding nodes as children of existing nodes
 		for (Map<String, Object> row : rowData) {

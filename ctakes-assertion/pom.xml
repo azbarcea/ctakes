@@ -23,6 +23,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>ctakes-assertion</artifactId>
 	<name>Apache cTAKES Assertion</name>
+	<properties>
+		<spring.version>4.3.12.RELEASE</spring.version>
+	</properties>
 	<parent>
 		<groupId>org.apache.ctakes</groupId>
 		<artifactId>ctakes</artifactId>
@@ -104,11 +107,13 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 		<!-- we excluded spring-context uimafit transitive dependency in the parent pom, include it here -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>

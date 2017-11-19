@@ -86,8 +86,8 @@
         <pathelement location="../../../../.m2/repository/jwnl/jwnl/1.3.3/jwnl-1.3.3.jar"/>
         <pathelement location="../../../../.m2/repository/org/apache/lucene/lucene-core/4.0.0/lucene-core-4.0.0.jar"/>
         <pathelement location="../../../../.m2/repository/tw/edu/ntu/csie/libsvm/3.1/libsvm-3.1.jar"/>
-        <pathelement location="../../../../.m2/repository/org/springframework/spring-core/3.1.2.RELEASE/spring-core-3.1.2.RELEASE.jar"/>
-        <pathelement location="../../../../.m2/repository/org/springframework/spring-asm/3.1.2.RELEASE/spring-asm-3.1.2.RELEASE.jar"/>
+        <pathelement location="../../../../.m2/repository/org/springframework/spring-core/4.3.12.RELEASE/spring-core-4.3.12.RELEASE.jar"/>
+        <pathelement location="../../../../.m2/repository/org/springframework/spring-asm/4.3.12.RELEASE/spring-asm-4.3.12.RELEASE.jar"/>
         <pathelement location="../../../../.m2/repository/org/uimafit/uimafit/1.4.0/uimafit-1.4.0.jar"/>
         <pathelement location="../../../../.m2/repository/org/apache/uima/uimaj-tools/2.4.0/uimaj-tools-2.4.0.jar"/>
         <pathelement location="../../../../.m2/repository/org/apache/uima/uimaj-cpe/2.4.0/uimaj-cpe-2.4.0.jar"/>

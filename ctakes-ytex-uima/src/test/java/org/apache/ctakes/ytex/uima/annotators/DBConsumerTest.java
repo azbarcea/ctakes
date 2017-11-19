@@ -134,19 +134,19 @@ public class DBConsumerTest {
 		String query = String.format(
 				"select count(*) from %sdocument where instance_id=%s",
 				schemaPrefix, key);
-		Assert.assertTrue(query, jt.queryForInt(query) == 1);
+		Assert.assertTrue(query, jt.queryForObject(query,Integer.class) == 1);
 		query = String
 				.format("select count(*) from %sdocument d inner join %sanno_base ab on ab.document_id = d.document_id inner join %sanno_segment s on s.anno_base_id = ab.anno_base_id where d.instance_id=%s",
 						schemaPrefix, schemaPrefix, schemaPrefix, key);
-		Assert.assertTrue(query, jt.queryForInt(query) == 1);
+		Assert.assertTrue(query, jt.queryForObject(query,Integer.class) == 1);
 		query = String
 				.format("select count(*) from %sdocument d inner join %sanno_base ab on ab.document_id = d.document_id inner join %sanno_sentence s on s.anno_base_id = ab.anno_base_id where d.instance_id=%s",
 						schemaPrefix, schemaPrefix, schemaPrefix, key);
-		Assert.assertTrue(query, jt.queryForInt(query) > 1);
+		Assert.assertTrue(query, jt.queryForObject(query,Integer.class) > 1);
 		query = String
 				.format("select count(*) from %sdocument d inner join %sanno_base ab on ab.document_id = d.document_id inner join %sanno_token s on s.anno_base_id = ab.anno_base_id where d.instance_id=%s",
 						schemaPrefix, schemaPrefix, schemaPrefix, key);
-		Assert.assertTrue(query, jt.queryForInt(query) > 1);
+		Assert.assertTrue(query, jt.queryForObject(query,Integer.class) > 1);
 	}
 
 }

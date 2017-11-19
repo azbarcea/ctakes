@@ -83,6 +83,7 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven-surefire-plugin.version>2.12.1</maven-surefire-plugin.version>
 		<exec-maven-plugin.version>1.2.1</exec-maven-plugin.version>
+		<spring.version>4.3.12.RELEASE</spring.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -326,17 +327,17 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-core</artifactId>
-				<version>3.1.2.RELEASE</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
-				<version>3.1.2.RELEASE</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-web</artifactId>
-				<version>3.1.2.RELEASE</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>edu.mit.findstruct</groupId>
