@@ -51,10 +51,10 @@ public class DateAnnotatorTest {
 	    dateAnnotator.dateType = org.apache.ctakes.ytex.uima.types.Date.class.getName();
 	    dateAnnotator.process(jCas);
 	    AnnotationIndex<Annotation> ytexDates = jCas.getAnnotationIndex(org.apache.ctakes.ytex.uima.types.Date.type);
-	    /*Assert.assertTrue(ytexDates.iterator().hasNext());
+	    Assert.assertTrue(ytexDates.iterator().hasNext());
 	    String dateParsed = ((org.apache.ctakes.ytex.uima.types.Date)ytexDates.iterator().next()).getDate();
 	    Assert.assertNotNull(dateParsed);
-	    System.out.println(dateParsed);*/
+	    System.out.println(dateParsed);
 	}
 
 }
