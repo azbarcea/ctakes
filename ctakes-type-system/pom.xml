@@ -24,9 +24,6 @@
 	<artifactId>ctakes-type-system</artifactId>
 	<name>Apache cTAKES common type system</name>
 	<description>Defines the cTAKES type system UIMA annotation classes.</description>
-	<properties>
-		<spring.version>4.3.12.RELEASE</spring.version>
-	</properties>
 	<parent>
 		<groupId>org.apache.ctakes</groupId>
 		<artifactId>ctakes</artifactId>
@@ -41,12 +38,10 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>tw.edu.ntu.csie</groupId>
@@ -67,7 +62,7 @@
 				<plugin>
 				  <groupId>org.apache.uima</groupId>
 				  <artifactId>jcasgen-maven-plugin</artifactId>
-				  <version>2.9.0</version>				  
+				  <version>2.9.0</version>
 				  <executions>
 				    <execution>
 				      <goals><goal>generate</goal></goals>
@@ -81,6 +76,6 @@
 				    </execution>
 				    </executions>
 				</plugin>
-		</plugins>				
+		</plugins>
  	</build>
 </project>

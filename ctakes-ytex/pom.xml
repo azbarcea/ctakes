@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
-	license agreements. See the NOTICE file distributed with this work for additional 
-	information regarding copyright ownership. The ASF licenses this file to 
-	you under the Apache License, Version 2.0 (the "License"); you may not use 
-	this file except in compliance with the License. You may obtain a copy of 
-	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
-	by applicable law or agreed to in writing, software distributed under the 
-	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
-	OF ANY KIND, either express or implied. See the License for the specific 
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor
+	license agreements. See the NOTICE file distributed with this work for additional
+	information regarding copyright ownership. The ASF licenses this file to
+	you under the Apache License, Version 2.0 (the "License"); you may not use
+	this file except in compliance with the License. You may obtain a copy of
+	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required
+	by applicable law or agreed to in writing, software distributed under the
+	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+	OF ANY KIND, either express or implied. See the License for the specific
 	language governing permissions and limitations under the License. -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>ctakes-ytex</artifactId>
 	<name>Apache cTAKES YTEX</name>
-	<properties>
-		<spring.version>4.3.12.RELEASE</spring.version>
-	</properties>
 	<parent>
 		<groupId>org.apache.ctakes</groupId>
 		<artifactId>ctakes</artifactId>
@@ -50,23 +47,23 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.26</version>
 		</dependency>
-		<!-- download from ms: http://www.microsoft.com/en-us/download/details.aspx?displaylang=en&id=11774, 
-			install to local maven repo: mvn install:install-file -Dfile=sqljdbc4.jar 
+		<!-- download from ms: http://www.microsoft.com/en-us/download/details.aspx?displaylang=en&id=11774,
+			install to local maven repo: mvn install:install-file -Dfile=sqljdbc4.jar
 			-DgroupId=com.microsoft.sqlserver -DartifactId=sqljdbc -Dversion=4.0 -Dpackaging=jar -->
-		<!-- Do *not* check this in with this depency uncommented - this will break 
-			builds in environments where the driver has not been added to the local repo 
-			<dependency> <groupId>com.microsoft.sqlserver</groupId> <artifactId>sqljdbc</artifactId> 
+		<!-- Do *not* check this in with this depency uncommented - this will break
+			builds in environments where the driver has not been added to the local repo
+			<dependency> <groupId>com.microsoft.sqlserver</groupId> <artifactId>sqljdbc</artifactId>
 			<version>4.0</version> </dependency> -->
-		<!-- download from oracle http://www.oracle.com/technetwork/database/features/jdbc/jdbc-drivers-12c-download-1958347.html, 
-			install to local maven repo: mvn install:install-file -Dfile=ojdbc7_g.jar 
+		<!-- download from oracle http://www.oracle.com/technetwork/database/features/jdbc/jdbc-drivers-12c-download-1958347.html,
+			install to local maven repo: mvn install:install-file -Dfile=ojdbc7_g.jar
 			-DgroupId=oracle.jdbc -DartifactId=ojdbc7_g -Dversion=12.1.0.1.0 -Dpackaging=jar -->
-		<!-- Do *not* check this in with this depency uncommented - this will break 
-			builds in environments where the driver has not been added to the local repo 
-			<dependency> <groupId>oracle.jdbc</groupId> <artifactId>ojdbc7_g</artifactId> 
+		<!-- Do *not* check this in with this depency uncommented - this will break
+			builds in environments where the driver has not been added to the local repo
+			<dependency> <groupId>oracle.jdbc</groupId> <artifactId>ojdbc7_g</artifactId>
 			<version>12.1.0.1.0</version> </dependency> -->
 		<!-- end non ASF compliant dependencies -->
 
-		<!-- begin ASF compliant hibernate dependencies. we need to explicitly 
+		<!-- begin ASF compliant hibernate dependencies. we need to explicitly
 			include them so that get distributed with ctakes -->
 		<!-- public domain -->
 		<dependency>
@@ -139,27 +136,22 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>
@@ -167,7 +159,7 @@
 			<version>1.7.3</version>
 		</dependency>
 
-		<!-- ehcache > 2.5.0 breaks unit tests - get errors due to multiple cache 
+		<!-- ehcache > 2.5.0 breaks unit tests - get errors due to multiple cache
 			managers in same vm -->
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
@@ -221,7 +213,7 @@
 
 
 		<plugins>
-			<!-- JAXB xjc plugin that invokes the xjc compiler to compile XML schema 
+			<!-- JAXB xjc plugin that invokes the xjc compiler to compile XML schema
 				into Java classes. -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
