@@ -36,6 +36,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.ctakes</groupId>
+			<artifactId>ctakes-lvg-res</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ctakes</groupId>
 			<artifactId>ctakes-core</artifactId>
 		</dependency>
 		<dependency>
@@ -178,9 +183,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<skip>true</skip>
-				</configuration>
 				<executions>
 					<execution>
 						<id>surefire-it</id>
@@ -189,7 +191,6 @@
 							<goal>test</goal>
 						</goals>
 						<configuration>
-							<skip>false</skip>
 							<forkMode>always</forkMode>
 							<systemPropertyVariables>
 								<log4j.configuration>file:${project.basedir}/src/test/resources/log4j.properties</log4j.configuration>
@@ -199,7 +200,7 @@
 							<forkCount>1</forkCount>
 							<reuseForks>false</reuseForks>
 							<forkedProcessTimeoutInSeconds>900</forkedProcessTimeoutInSeconds>
-							<additionalClasspathElements>
+							<!-- additionalClasspathElements>
 								<additionalClasspathElement>${project.basedir}/../ctakes-assertion-res/src/main/resources</additionalClasspathElement>
 								<additionalClasspathElement>${project.basedir}/../ctakes-assertion-zoner-res/src/main/resources</additionalClasspathElement>
 								<additionalClasspathElement>${project.basedir}/../ctakes-chunker-res/src/main/resources</additionalClasspathElement>
@@ -217,7 +218,7 @@
 								<additionalClasspathElement>${project.basedir}/../ctakes-smoking-status-res/src/main/resources</additionalClasspathElement>
 								<additionalClasspathElement>${project.basedir}/../ctakes-temporal-res/src/main/resources</additionalClasspathElement>
 								<additionalClasspathElement>${project.basedir}/../ctakes-ytex-res/src/main/resources</additionalClasspathElement>
-							</additionalClasspathElements>
+							</additionalClasspathElements -->
 						</configuration>
 					</execution>
 				</executions>

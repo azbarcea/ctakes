@@ -17,7 +17,6 @@ db.schema=ytex_test
 # if not specified, will default to schema from ytex
 #umls.schema=umls
 
-
 # you should not have to modify anything below
 # hibernate database dialect
 # specify Oracle8iDialect, Oracle9iDialect, or Oracle10gDialect

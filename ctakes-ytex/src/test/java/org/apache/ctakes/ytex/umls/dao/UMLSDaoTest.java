@@ -36,16 +36,17 @@ import org.springframework.context.access.ContextSingletonBeanFactoryLocator;
  */
 public class UMLSDaoTest {
 	private static final Logger log = Logger.getLogger(UMLSDaoTest.class);
+
 	UMLSDao umlsDao = null;
 
 	@Before
 	public void setUp() throws Exception {
 		ApplicationContext appCtx = (ApplicationContext) ContextSingletonBeanFactoryLocator
-				.getInstance(
-						"classpath*:org/apache/ctakes/ytex/kernelBeanRefContext.xml")
+				.getInstance("classpath*:org/apache/ctakes/ytex/kernelBeanRefContext.xml")
 				.useBeanFactory("kernelApplicationContext").getFactory();
 		umlsDao = appCtx.getBean(UMLSDao.class);
 	}
+
 
 	@Test
 	public void testGetAllAuiStr() {
@@ -54,9 +55,7 @@ public class UMLSDaoTest {
 			Assert.assertNotNull(auis);
 			log.debug("testGetAllAuiStr()" + auis.size());
 		} catch (Exception e) {
-			log.warn(
-					"sql exception - mrconso probably doesn't exist, check error",
-					e);
+			log.warn("sql exception - mrconso probably doesn't exist, check error", e);
 		}
 	}
 

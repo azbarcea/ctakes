@@ -35,26 +35,9 @@
 			<groupId>net.sourceforge.ctakesresources</groupId>
 			<artifactId>ctakes-resources-lvg2008</artifactId>
 		</dependency>
-</dependencies>			  
+  </dependencies>
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>unpack-dependencies</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>unpack-dependencies</goal>
-						</goals>
-						<configuration>
-							<includeArtifactId>ctakes-resources-lvg2008</includeArtifactId>
-							<outputDirectory>${project.build.directory}/classes</outputDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 				<plugin>
 					<artifactId>maven-jar-plugin</artifactId>
 					<configuration>

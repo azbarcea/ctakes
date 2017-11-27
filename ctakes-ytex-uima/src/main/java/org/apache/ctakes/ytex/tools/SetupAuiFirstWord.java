@@ -105,6 +105,7 @@ public class SetupAuiFirstWord {
 			if (log.isInfoEnabled())
 				log.info("loading lvg.properties from:" + uri.getPath());
 			File f = new File(uri.getPath());
+			log.info(f.getAbsolutePath());
 			String configDir = f.getParentFile().getAbsolutePath();
 			String lvgDir = configDir.substring(0, configDir.length()
 					- "data/config".length());

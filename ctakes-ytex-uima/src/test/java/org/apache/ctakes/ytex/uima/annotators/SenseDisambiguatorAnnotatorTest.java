@@ -51,7 +51,7 @@ public class SenseDisambiguatorAnnotatorTest {
 	@Before
 	public void setUp() throws Exception {
 		BeanFactory appCtx = ContextSingletonBeanFactoryLocator
-				.getInstance("classpath*:org/apache/ctakes/ytex/kernelBeanRefContext.xml")
+				.getInstance("classpath*:/org/apache/ctakes/ytex/kernelBeanRefContext.xml")
 				.useBeanFactory("kernelApplicationContext").getFactory();
 		conceptDao = appCtx.getBean(ConceptDao.class);
 		JdbcTemplate jdbcTemplate = new JdbcTemplate();
