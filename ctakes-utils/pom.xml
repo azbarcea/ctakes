@@ -40,6 +40,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
+			<!-- TODO: refactor TestUtil.java and remove dependency over scope:compile -->
 			<scope>compile</scope>
 		</dependency>
 		<dependency>

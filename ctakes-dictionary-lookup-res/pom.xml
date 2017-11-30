@@ -35,17 +35,14 @@
 		<dependency>
 			<groupId>net.sourceforge.ctakesresources</groupId>
 			<artifactId>ctakes-resources-umls2011ab</artifactId>
-			<version>4.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sourceforge.ctakesresources</groupId>
 			<artifactId>ctakes-resources-rxnorm-hsqldb-2011ab</artifactId>
-			<version>4.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sourceforge.ctakesresources</groupId>
 			<artifactId>ctakes-resources-orangebook-hsqldb</artifactId>
-			<version>4.0.0</version>
 		</dependency>		
 		
 	</dependencies>

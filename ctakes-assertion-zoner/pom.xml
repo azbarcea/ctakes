@@ -36,7 +36,6 @@
 		<dependency>
 			<groupId>net.sf.mastif</groupId>
 			<artifactId>mastif-zoner</artifactId>
-			<version>1.4</version>
 		</dependency>
         <!--  uimaj core is added by core (via utils).  -->
         <!--<dependency>-->
@@ -50,9 +49,9 @@
         <!--<artifactId>spring-context</artifactId>-->
         <!--</dependency>-->
 		<dependency>
-      <groupId>org.apache.ctakes</groupId>
-      <artifactId>ctakes-core</artifactId>
-    </dependency>
+      		<groupId>org.apache.ctakes</groupId>
+      		<artifactId>ctakes-core</artifactId>
+    	</dependency>
         <!--  uimafit core is added by core (via type system).  -->
         <!--<dependency>-->
         <!--<groupId>org.apache.uima</groupId>-->
@@ -64,7 +63,6 @@
 				<plugin>
 				  <groupId>org.apache.uima</groupId>
 				  <artifactId>jcasgen-maven-plugin</artifactId>
-				  <version>2.9.0</version>				  
 				  <executions>
 				    <execution>
 				      <goals><goal>generate</goal></goals>

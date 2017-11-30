@@ -78,14 +78,68 @@
 	</mailingLists>
 
 	<properties>
-		<ctakes.version>4.0.1-SNAPSHOT</ctakes.version>
+		<!-- dependencies -->
+		<ant.version>1.9.2</ant.version>
+		<antlr.version>2.7.7</antlr.version>
+		<ant-contrib.version>1.0b3</ant-contrib.version>
+		<aspectj.version>1.7.3</aspectj.version>
+		<backport-util.version>3.1</backport-util.version>
+		<cglib.version>2.2.2</cglib.version>
+		<cleartk.version>2.0.0</cleartk.version>
+		<commons-beanutils.version>1.8.3</commons-beanutils.version>
+		<commons-cli.version>1.2</commons-cli.version>
+		<commons-collections.version>3.2.1</commons-collections.version>
+		<commons-dbcp.version>1.4</commons-dbcp.version>
+		<commons-el.version>1.0</commons-el.version>
+		<commons-io.version>2.2</commons-io.version>
+		<commons-jxpath.version>1.3</commons-jxpath.version>
+		<commons-lang.version>2.6</commons-lang.version>
+		<commons-logging-api.version>1.1</commons-logging-api.version>
+		<commons-logging.version>1.1.1</commons-logging.version>
+		<commons-pool.version>1.5.4</commons-pool.version>
+		<ctakesresources.version>4.0.0</ctakesresources.version>
+		<cxf.version>2.7.8</cxf.version>
+		<diffutils.version>1.3.0</diffutils.version>
+		<dom4j.version>1.6.1</dom4j.version>
+		<ehcache.version>2.4.6</ehcache.version>
+		<exec-maven-plugin.version>1.2.1</exec-maven-plugin.version>
+		<fast-classpath-scanner.version>2.0.18</fast-classpath-scanner.version>
+		<glassfish-web.version>2.2</glassfish-web.version>
+		<hibernate.version>4.2.6.Final</hibernate.version>
+		<hsqldb.version>2.3.4</hsqldb.version>
+		<icefaces.version>2.0.2</icefaces.version>
+		<jackson.version>1.5.0</jackson.version>
+		<javassist.version>3.15.0-GA</javassist.version>
+		<jaxb.version>2.2.5</jaxb.version>
+		<jaxb2-maven-plugin.version>1.6</jaxb2-maven-plugin.version>
+		<jchronic.version>0.2.6</jchronic.version>
+		<jetty.version>9.1.0.M0</jetty.version>
+		<jsf-api.version>2.1.3</jsf-api.version>
+		<jsf-impl.version>2.1.3</jsf-impl.version>
+		<jsr107cache.version>1.0</jsr107cache.version>
+		<junit.version>4.11</junit.version>
+		<jwi.version>2.2.3</jwi.version>
+		<mastif.version>1.4</mastif.version>
+		<maven-antrun-plugin.version>1.6</maven-antrun-plugin.version>
+		<maven-assembly-plugin.version>2.4</maven-assembly-plugin.version>
+		<maven-surefire-plugin.version>2.12.1</maven-surefire-plugin.version>
+		<maven-war-plugin.version>2.4</maven-war-plugin.version>
+		<mysql-connector.version>5.1.26</mysql-connector.version>
+		<scala-library.version>2.11.7</scala-library.version>
+		<scala-tools.version>0.4.0</scala-tools.version>
+		<servlet-jsp-api.version>2.2</servlet-jsp-api.version>
+		<servlet-jstl.version>1.2</servlet-jstl.version>
+		<slf4j.version>1.6.1</slf4j.version>
+		<solr.version>3.5.0</solr.version>
+		<spring.version>4.3.12.RELEASE</spring.version>
+		<uimafit.version>2.3.0</uimafit.version>
+		<uimaj.version>2.9.0</uimaj.version>
+		<timenorm.version>0.9.5</timenorm.version>
+		<weka.version>3.6.10</weka.version>
+		<xmlunit.version>1.4</xmlunit.version>
+		<!-- project specific conventions -->
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<maven-surefire-plugin.version>2.12.1</maven-surefire-plugin.version>
-		<exec-maven-plugin.version>1.2.1</exec-maven-plugin.version>
-		<uimaj.version>2.9.0</uimaj.version>
-		<uimafit.version>2.3.0</uimafit.version>
-		<spring.version>4.3.12.RELEASE</spring.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -156,7 +210,7 @@
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>4.11</version>
+				<version>${junit.version}</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
@@ -185,11 +239,6 @@
 				<groupId>org.jdom</groupId>
 				<artifactId>jdom2</artifactId>
 				<version>2.0.6</version>
-			</dependency>
-			<dependency>
-				<groupId>antlr</groupId>
-				<artifactId>antlr</artifactId>
-				<version>2.7.7</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.lucene</groupId>
@@ -221,17 +270,47 @@
 				<artifactId>lucene-analyzers-common</artifactId>
 				<version>4.0.0</version>
 			</dependency>
-			<dependency>
+			<!-- TODO: remove unused dependency -->
+			<!-- dependency>
 				<groupId>org.apache.lucene</groupId>
 				<artifactId>lucene-solr-grandparent</artifactId>
 				<version>4.0.0</version>
-			</dependency>
+			</dependency -->
 			<!--  TODO : update snowball  -->
 			<!--<dependency>-->
 				<!--<groupId>org.apache.lucene</groupId>-->
 				<!--<artifactId>lucene-snowball</artifactId>-->
 				<!--<version>4.0.0</version>-->
 			<!--</dependency>-->
+			<!-- Jackson -->
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-core-asl</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-mapper-asl</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<!-- Mastif: Assertion Classificaiton System -->
+			<dependency>
+				<groupId>net.sf.mastif</groupId>
+				<artifactId>mastif-zoner</artifactId>
+				<version>${mastif.version}</version>
+			</dependency>
+			<!-- Scala -->
+			<dependency>
+				<groupId>org.scala-lang</groupId>
+				<artifactId>scala-library</artifactId>
+				<version>${scala-library.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.scala-tools.sbinary</groupId>
+				<artifactId>sbinary_2.9.0</artifactId>
+				<version>${scala-tools.version}</version>
+			</dependency>
+			<!-- Apache UIMA -->
 			<dependency>
 				<groupId>org.apache.uima</groupId>
 				<artifactId>uimaj-core</artifactId>
@@ -292,9 +371,20 @@
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk</artifactId>
-				<version>2.0.0</version>
+				<version>${cleartk.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.cleartk</groupId>
+				<artifactId>cleartk-ml-liblinear</artifactId>
+				<version>${cleartk.version}</version>
+			</dependency>
+			<!-- HSQL DB -->
+			<dependency>
+				<groupId>org.hsqldb</groupId>
+				<artifactId>hsqldb</artifactId>
+				<version>${hsqldb.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>args4j</groupId>
@@ -314,12 +404,12 @@
 			<dependency>
 				<groupId>commons-lang</groupId>
 				<artifactId>commons-lang</artifactId>
-				<version>2.6</version>
+				<version>${commons-lang.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-cli</groupId>
 				<artifactId>commons-cli</artifactId>
-				<version>1.2</version>
+				<version>${commons-cli.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-logging</groupId>
@@ -416,310 +506,344 @@
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>ctakes-gui</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>ctakes-gui-res</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>ctakes-examples</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>ctakes-examples-res</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>ctakes-type-system</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>ctakes-utils</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>ctakes-core</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>ctakes-core-res</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>ctakes-dictionary-lookup</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>ctakes-dictionary-lookup-res</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>ctakes-dictionary-lookup-fast</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>ctakes-dictionary-lookup-fast-res</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>ctakes-preprocessor</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>ctakes-pos-tagger</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>ctakes-pos-tagger-res</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>ctakes-chunker</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>ctakes-chunker-res</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>ctakes-lvg</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>ctakes-lvg-res</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-context-tokenizer
 				</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-clinical-pipeline
 				</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-clinical-pipeline-res
 				</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-ne-contexts
 				</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-ne-contexts-res
 				</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-assertion
 				</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-assertion-res
 				</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>ctakes-assertion-zoner</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>ctakes-assertion-zoner-res</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-constituency-parser
 				</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-constituency-parser-res
 				</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-coreference
 				</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-coreference-res
 				</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-drug-ner
 				</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-drug-ner-res
 				</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-side-effect
 				</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-side-effect-res
 				</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-smoking-status
 				</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-smoking-status-res
 				</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-dependency-parser
 				</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-dependency-parser-res
 				</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-relation-extractor
 				</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-relation-extractor-res
 				</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-temporal
 				</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-temporal-res
 				</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-ytex-res
 				</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-ytex
 				</artifactId>
-				<version>${ctakes.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
-				<artifactId>
-					ctakes-ytex-uima
-				</artifactId>
-				<version>${ctakes.version}</version>
+				<artifactId>ctakes-ytex-uima</artifactId>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
-				<artifactId>
-					ctakes-ytex-web
-				</artifactId>
-				<version>${ctakes.version}</version>
+				<artifactId>ctakes-ytex-web</artifactId>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ctakes</groupId>
 				<artifactId>
 					ctakes-distribution
                 </artifactId>
-                <version>${ctakes.version}</version>
+                <version>${project.version}</version>
             </dependency>
+			<!-- cTAKES Resources -->
+			<dependency>
+				<groupId>net.sourceforge.ctakesresources</groupId>
+				<artifactId>ctakes-resources-lvg2008</artifactId>
+				<version>${ctakesresources.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.sourceforge.ctakesresources</groupId>
+				<artifactId>ctakes-resources-orangebook-hsqldb</artifactId>
+				<version>${ctakesresources.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.sourceforge.ctakesresources</groupId>
+				<artifactId>ctakes-resources-rxnorm-hsqldb-2011ab</artifactId>
+				<version>${ctakesresources.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.sourceforge.ctakesresources</groupId>
+				<artifactId>ctakes-resources-sno_rx</artifactId>
+				<version>${ctakesresources.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.sourceforge.ctakesresources</groupId>
+				<artifactId>ctakes-resources-umls2011ab</artifactId>
+				<version>${ctakesresources.version}</version>
+			</dependency>
+			<!-- XML Unit -->
+			<dependency>
+				<groupId>xmlunit</groupId>
+				<artifactId>xmlunit</artifactId>
+				<version>${xmlunit.version}</version>
+				<scope>test</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<build>
 		<!-- It's good practice to explicitly declare versions for all plugins -->
 		<pluginManagement>
 			<plugins>
+				<!-- TODO: remove dependency upon Apache Ant -->
+				<plugin>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>${maven-antrun-plugin.version}</version>
+				</plugin>
 				<plugin>
 					<groupId>com.mycila.maven-license-plugin</groupId>
 					<artifactId>maven-license-plugin</artifactId>
@@ -770,7 +894,7 @@
 				</plugin>						
 				<plugin>
 					<artifactId>maven-assembly-plugin</artifactId>
-					<version>2.4</version>
+					<version>${maven-assembly-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-clean-plugin</artifactId>
@@ -914,7 +1038,7 @@
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0</version>
+					<version>1.0.0</version>
 					<configuration>
 						<lifecycleMappingMetadata>
 							<pluginExecutions>
@@ -976,6 +1100,11 @@
 						<includeProjectDependencies>true</includeProjectDependencies>
 						<includePluginDependencies>true</includePluginDependencies>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.uima</groupId>
+					<artifactId>jcasgen-maven-plugin</artifactId>
+					<version>${uimaj.version}</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>

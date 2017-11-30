@@ -30,10 +30,10 @@
   <name>Apache cTAKES Resources lvg</name>
   <description>Resources Project for ctakes-lvg</description>
   <dependencies>
+	    <!-- TODO: remove dependency to net.sourceforge.ctakesresources -->
 		<dependency>
 			<groupId>net.sourceforge.ctakesresources</groupId>
 			<artifactId>ctakes-resources-lvg2008</artifactId>
-			<version>4.0.0</version>
 		</dependency>
 </dependencies>			  
 	<build>

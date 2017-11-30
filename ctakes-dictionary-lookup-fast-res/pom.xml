@@ -34,7 +34,6 @@
          <!--  TODO  :  update per release  -->
          <groupId>net.sourceforge.ctakesresources</groupId>
          <artifactId>ctakes-resources-sno_rx</artifactId>
-         <version>4.0.0</version>
       </dependency>
    </dependencies>
    <build>
