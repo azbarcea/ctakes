@@ -50,8 +50,10 @@ public class UMLSDaoTest {
 
 	@Test
 	public void testGetAllAuiStr() {
+		// TODO: by catching Exception, the test succedes even if the umlsDao.getAllAuiStr fails
 		try {
 			List<Object[]> auis = umlsDao.getAllAuiStr("");
+			// TODO: not a sufficient integration test
 			Assert.assertNotNull(auis);
 			log.debug("testGetAllAuiStr()" + auis.size());
 		} catch (Exception e) {
