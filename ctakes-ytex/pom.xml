@@ -296,6 +296,21 @@
 							</target>
 						</configuration>
 					</execution>
+					<execution>
+						<id>generate-ytex-hsqldb-properties</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target description="creates ytex.properties file from ytex.hsqldb.properties">
+								<!-- TODO: ytex.${db.driver}.properties should be generated out of a ytex.properties.template file -->
+								<copy file="${project.basedir}/src/test/resources/org/apache/ctakes/ytex/ytex.mssql.properties"
+									  tofile="${project.build.outputDirectory}/src/test/resources/org/apache/ctakes/ytex/ytex.properties"/>
+							</target>
+						</configuration>
+
+					</execution>
 				</executions>
 			</plugin>
 
