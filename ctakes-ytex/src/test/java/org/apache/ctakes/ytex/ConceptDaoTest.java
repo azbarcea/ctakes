@@ -32,21 +32,60 @@ import org.apache.ctakes.ytex.kernel.metric.ConceptSimilarityService;
 import org.apache.ctakes.ytex.kernel.metric.ConceptSimilarityService.SimilarityMetricEnum;
 import org.apache.ctakes.ytex.kernel.model.ConceptGraph;
 import org.apache.log4j.Logger;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.access.ContextSingletonBeanFactoryLocator;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import static org.junit.Assert.*;
 
 public class ConceptDaoTest {
-	ConceptDao conceptDao;
-	ApplicationContext appCtx;
 
 	static private final Logger LOGGER = Logger.getLogger(ConceptDaoTest.class);
+
+	private ConceptDao conceptDao = null;
+
+	private ApplicationContext appCtx = null;
+
+	/**
+	 * Helper function to drop a 'table' from a DB, using SQL syntax
+	 *
+	 * @param jdbc
+	 * @param dbEngineType
+	 * @param sqlTableName
+	 */
+	private final void dropTableIfExist(JdbcOperations jdbc, final String dbEngineType, final String sqlTableName) {
+		// TODO: consider refactor using JOOQ
+		String sqlStatement = "";
+		switch (dbEngineType.toLowerCase()) {
+			case "hsql":
+			case "mysql":
+				sqlStatement = String.format("DROP TABLE IF EXISTS %s", sqlTableName);
+				break;
+			case "mssql":
+				sqlStatement = String.format("IF EXISTS(SELECT * FROM sys.objects WHERE object_id = object_id('%s')) DROP TABLE %s", sqlTableName);
+				break;
+			case "orcl":
+				sqlStatement = String.format("DROP TABLE %s", sqlTableName);
+				break;
+			default:
+				LOGGER.warn(String.format("unsupported DB engine type: %s", dbEngineType));
+				break;
+		}
+		if (!sqlStatement.isEmpty()) {
+			try {
+				jdbc.execute(sqlStatement);
+			} catch (DataAccessException e) {
+				LOGGER.warn("couldn't drop table test_concepts. Maybe it doesn't even exists", e);
+			}
+		}
+	}
 
 	@Before
 	public void setUp() throws Exception {
@@ -54,23 +93,14 @@ public class ConceptDaoTest {
 				.getInstance("classpath*:org/apache/ctakes/ytex/kernelBeanRefContext.xml")
 				.useBeanFactory("kernelApplicationContext").getFactory();
 		conceptDao = appCtx.getBean(ConceptDao.class);
+
 		JdbcTemplate jdbcTemplate = new JdbcTemplate();
 		jdbcTemplate.setDataSource(appCtx.getBean(DataSource.class));
-		Properties ytexProperties = (Properties) appCtx
-				.getBean("ytexProperties");
+		Properties ytexProperties = (Properties) appCtx.getBean("ytexProperties");
 		String dbtype = ytexProperties.getProperty("db.type");
-		if ("hsql".equals(dbtype) || "mysql".equals(dbtype))
-			jdbcTemplate.execute("drop table if exists test_concepts");
-		if ("mssql".equals(dbtype))
-			jdbcTemplate.execute("if exists(select * from sys.objects where object_id = object_id('test_concepts')) drop table test_concepts");
-		if ("orcl".equals(dbtype)) {
-			// just try dropping the table, catch exception and hope all is well
-			try {
-				jdbcTemplate.execute("drop table test_concepts");
-			} catch (Exception ignore) {
 
-			}
-		}
+		dropTableIfExist(jdbcTemplate, dbtype, "test_concepts");
+
 		jdbcTemplate.execute("create table test_concepts(parent varchar(20), child varchar(20))");
 		jdbcTemplate.execute("insert into test_concepts values ('root', 'animal')");
 		jdbcTemplate.execute("insert into test_concepts values ('animal', 'vertebrate')");
@@ -78,13 +108,13 @@ public class ConceptDaoTest {
 		jdbcTemplate.execute("insert into test_concepts values ('vertebrate', 'dog')");
 		jdbcTemplate.execute("insert into test_concepts values ('root', 'bacteria')");
 		jdbcTemplate.execute("insert into test_concepts values ('bacteria', 'e coli')");
+
 		LOGGER.info("Create concept graph");
 		conceptDao.createConceptGraph(null, "test",
-				"select child, parent from test_concepts", true,
+				"SELECT child,parent FROM test_concepts", true,
 				Collections.EMPTY_SET);
 		ConceptGraph cg = conceptDao.getConceptGraph("test");
 		assertNotNull(cg);
-		((ConfigurableApplicationContext) appCtx).close();
 	}
 
 	@Test
@@ -112,4 +142,11 @@ public class ConceptDaoTest {
 		assertTrue(simDogCat.getSimilarities().get(1) > simDogEColi.getSimilarities().get(1));
 	}
 
+	@After
+	public void tearDown() throws  Exception {
+		if (appCtx != null) {
+			((ConfigurableApplicationContext) appCtx).close();
+			appCtx = null;
+		}
+	}
 }

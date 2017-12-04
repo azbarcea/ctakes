@@ -279,7 +279,7 @@
 					</execution>
 					<execution>
 						<id>generate-test-config</id>
-						<phase>pre-integration-test</phase>
+						<phase>integration-test</phase>
 						<goals>
 							<goal>run</goal>
 						</goals>
@@ -287,6 +287,7 @@
 							<target>
 								<!-- default to hsql, override via -D -->
 								<property name="db.type" value="hsql" />
+
 								<ant antfile="build-setup.xml" dir="scripts" target="test.setup">
 									<property name="config.local" value="${project.build.testOutputDirectory}" />
 									<property name="db.type" value="${db.type}" />
@@ -296,27 +297,18 @@
 							</target>
 						</configuration>
 					</execution>
-					<execution>
-						<id>generate-ytex-hsqldb-properties</id>
-						<phase>generate-test-resources</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<target description="creates ytex.properties file from ytex.hsqldb.properties">
-								<!-- TODO: ytex.${db.driver}.properties should be generated out of a ytex.properties.template file -->
-								<copy file="${project.basedir}/src/test/resources/org/apache/ctakes/ytex/ytex.mssql.properties"
-									  tofile="${project.build.outputDirectory}/src/test/resources/org/apache/ctakes/ytex/ytex.properties"/>
-							</target>
-						</configuration>
-
-					</execution>
 				</executions>
 			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/ConceptDaoTest*</exclude>
+						<exclude>**/UMLSDaoTest*</exclude>
+					</excludes>
+				</configuration>
 				<executions>
 					<execution>
 						<id>surefire-it</id>
@@ -336,6 +328,28 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.20.1</version>
+				<configuration>
+					<includes>
+						<include>**/ConceptDaoTest</include>
+						<!-- IMPORTANT! in the apache-release profile, following test should be executed manually -->
+						<include>**/UMLSDaoTest</include>
+					</includes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 		<pluginManagement>
 			<plugins>
