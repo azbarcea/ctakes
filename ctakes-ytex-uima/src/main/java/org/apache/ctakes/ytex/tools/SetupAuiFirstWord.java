@@ -18,39 +18,26 @@
  */
 package org.apache.ctakes.ytex.tools;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import gov.nih.nlm.nls.lvg.Api.LvgCmdApi;
+import org.apache.ctakes.core.nlp.tokenizer.Token;
+import org.apache.ctakes.core.nlp.tokenizer.TokenizerPTB;
+import org.apache.ctakes.ytex.kernel.KernelContextHolder;
+import org.apache.ctakes.ytex.umls.dao.UMLSDao;
+import org.apache.ctakes.ytex.umls.model.UmlsAuiFirstWord;
+import org.apache.log4j.Logger;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import org.apache.ctakes.core.nlp.tokenizer.Token;
-import org.apache.ctakes.core.nlp.tokenizer.TokenizerPTB;
-import org.apache.ctakes.ytex.kernel.KernelContextHolder;
-import org.apache.ctakes.ytex.umls.dao.UMLSDao;
-import org.apache.ctakes.ytex.umls.model.UmlsAuiFirstWord;
 
-import gov.nih.nlm.nls.lvg.Api.LvgCmdApi;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.*;
+import java.net.URL;
+import java.util.*;
 
 /**
  * setup umls_aui_fword table
@@ -59,7 +46,9 @@ import gov.nih.nlm.nls.lvg.Api.LvgCmdApi;
  * 
  */
 public class SetupAuiFirstWord {
-	private static final Log log = LogFactory.getLog(SetupAuiFirstWord.class);
+
+	static private final Logger LOGGER = Logger.getLogger(SetupAuiFirstWord.class);
+	
 	// private static final Pattern nonWord = Pattern.compile("\\W");
 	private TokenizerPTB tokenizer;
 	private LvgCmdApi lvgCmd;
@@ -102,18 +91,16 @@ public class SetupAuiFirstWord {
 		try {
 			URL uri = this.getClass().getClassLoader()
 					.getResource("org/apache/ctakes/lvg/data/config/lvg.properties");
-			if (log.isInfoEnabled())
-				log.info("loading lvg.properties from:" + uri.getPath());
+			LOGGER.info("loading lvg.properties from:" + uri.getPath());
 			File f = new File(uri.getPath());
+			LOGGER.info(f.getAbsolutePath());
 			String configDir = f.getParentFile().getAbsolutePath();
 			String lvgDir = configDir.substring(0, configDir.length()
 					- "data/config".length());
 			System.setProperty("user.dir", lvgDir);
 			lvgCmd = new LvgCmdApi("-f:l:b", f.getAbsolutePath());
 		} catch (Exception e) {
-			log.warn(
-					"could not initialize lvg - will not create a stemmed dictionary.",
-					e);
+			LOGGER.warn("could not initialize lvg - will not create a stemmed dictionary.", e);
 		}
 	}
 
@@ -135,13 +122,13 @@ public class SetupAuiFirstWord {
 					.getResourceAsStream(
 							"ctakes-lvg/desc/analysis_engine/LvgAnnotator.xml");
 			if(isLvgAnno == null) {
-				log.warn("classpath:ctakes-lvg/desc/analysis_engine/LvgAnnotator.xml not available, attempting to load from file system");
+				LOGGER.warn("classpath:ctakes-lvg/desc/analysis_engine/LvgAnnotator.xml not available, attempting to load from file system");
 				File f = new File("../ctakes-lvg/desc/analysis_engine/LvgAnnotator.xml");
 				if(f.exists())
 					isLvgAnno = new BufferedInputStream(new FileInputStream(f));
 			} 
 			if (isLvgAnno == null) {
-				log.warn("ctakes-lvg/desc/analysis_engine/LvgAnnotator.xml not available, using empty exclusion set");
+				LOGGER.warn("ctakes-lvg/desc/analysis_engine/LvgAnnotator.xml not available, using empty exclusion set");
 			} else {
 				DocumentBuilderFactory dbFactory = DocumentBuilderFactory
 						.newInstance();
@@ -215,32 +202,29 @@ public class SetupAuiFirstWord {
 					try {
 						UmlsAuiFirstWord fw = this.tokenizeStr(aui, str);
 						if (fw == null)
-							log.error("Error tokenizing aui=" + aui + ", str="
+							LOGGER.error("Error tokenizing aui=" + aui + ", str="
 									+ str);
 						else if (fw.getFword().length() > 70)
-							log.debug("fword too long: aui=" + aui + ", str="
+							LOGGER.debug("fword too long: aui=" + aui + ", str="
 									+ fw.getFword());
 						else if (fw.getTokenizedStr().length() > 250)
-							log.debug("string too long: aui=" + aui + ", str="
+							LOGGER.debug("string too long: aui=" + aui + ", str="
 									+ str);
 						else {
-							if (log.isDebugEnabled())
-								log.debug("aui=" + aui + ", fw=" + fw);
+							LOGGER.debug("aui=" + aui + ", fw=" + fw);
 							listFword.add(fw);
 						}
 					} catch (Exception e) {
-						log.error("Error tokenizing aui=" + aui + ", str="
-								+ str, e);
+						LOGGER.error("Error tokenizing aui=" + aui + ", str=" + str, e);
 					}
 				} else {
-					log.debug("Skipping aui because str to long: aui=" + aui
-							+ ", str=" + str);
+					LOGGER.debug("Skipping aui because str to long: aui=" + aui + ", str=" + str);
 				}
 			}
 			// batch insert
 			if (listFword.size() > 0) {
 				umlsDao.insertAuiFirstWord(listFword);
-				log.info("inserted " + listFword.size() + " rows");
+				LOGGER.info("inserted " + listFword.size() + " rows");
 			}
 		} while (listAuiStr.size() > 0);
 	}
@@ -334,7 +318,7 @@ public class SetupAuiFirstWord {
 		if (out != null)
 			output = out.split("\\|");
 		else {
-			log.warn("mutateToString returned null for: " + word);
+			LOGGER.warn("mutateToString returned null for: " + word);
 		}
 
 		if ((output != null) && (output.length >= 2)

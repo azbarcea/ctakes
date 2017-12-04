@@ -179,7 +179,13 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
-					<skip>true</skip>
+					<excludes>
+						<exclude>**/DBCollectionReaderTest*</exclude>
+						<exclude>**/DBConsumerTest*</exclude>
+						<exclude>**/DictionaryLookupAnnotatorTest*</exclude>
+						<exclude>**/SenseDisambiguatorAnnotatorTest*</exclude>
+						<exclude>**/SparseDataExporterTest*</exclude>
+					</excludes>
 				</configuration>
 				<executions>
 					<execution>
@@ -189,7 +195,6 @@
 							<goal>test</goal>
 						</goals>
 						<configuration>
-							<skip>false</skip>
 							<forkMode>always</forkMode>
 							<systemPropertyVariables>
 								<log4j.configuration>file:${project.basedir}/src/test/resources/log4j.properties</log4j.configuration>
@@ -199,7 +204,7 @@
 							<forkCount>1</forkCount>
 							<reuseForks>false</reuseForks>
 							<forkedProcessTimeoutInSeconds>900</forkedProcessTimeoutInSeconds>
-							<additionalClasspathElements>
+							<!-- additionalClasspathElements>
 								<additionalClasspathElement>${project.basedir}/../ctakes-assertion-res/src/main/resources</additionalClasspathElement>
 								<additionalClasspathElement>${project.basedir}/../ctakes-assertion-zoner-res/src/main/resources</additionalClasspathElement>
 								<additionalClasspathElement>${project.basedir}/../ctakes-chunker-res/src/main/resources</additionalClasspathElement>
@@ -217,8 +222,30 @@
 								<additionalClasspathElement>${project.basedir}/../ctakes-smoking-status-res/src/main/resources</additionalClasspathElement>
 								<additionalClasspathElement>${project.basedir}/../ctakes-temporal-res/src/main/resources</additionalClasspathElement>
 								<additionalClasspathElement>${project.basedir}/../ctakes-ytex-res/src/main/resources</additionalClasspathElement>
-							</additionalClasspathElements>
+							</additionalClasspathElements -->
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${maven-failsafe-plugin.version}</version>
+				<configuration>
+					<includes>
+						<include>**/DBCollectionReaderTest</include>
+						<include>**/DBConsumerTest</include>
+						<include>**/DictionaryLookupAnnotatorTest</include>
+						<!-- TODO: include>**/SenseDisambiguatorAnnotatorTest</include -->
+						<include>**/SparseDataExporterTest</include>
+					</includes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
