@@ -130,28 +130,22 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<!-- dirty hack to get resources into the classpath (because the *-res 
-			dependencies are empty) -->
+		<!-- HACK: dirty hack to get resources into the classpath (because the *-res dependencies are empty) -->
 		<resources>
 			<resource>
 				<directory>${project.basedir}/../ctakes-ytex-res/src/main/resources</directory>
 			</resource>
 			<resource>
-				<directory>
-				${project.basedir}/../ctakes-ytex/target/classes
-				</directory>
+				<directory>${project.basedir}/../ctakes-ytex/target/classes</directory>
 				<excludes>
 					<exclude>**/*.class</exclude>
 				</excludes>
 			</resource>
 		</resources>
-		<!-- dirty hack to get test resources into the classpath (because the *-res 
-			dependencies are empty) -->
+		<!-- HACK: dirty hack to get test resources into the classpath (because the *-res dependencies are empty) -->
 		<testResources>
 			<testResource>
-				<directory>
-				${project.basedir}/../ctakes-ytex/target/test-classes
-				</directory>
+				<directory>${project.basedir}/../ctakes-ytex/target/test-classes</directory>
 				<excludes>
 					<exclude>**/*.class</exclude>
 				</excludes>

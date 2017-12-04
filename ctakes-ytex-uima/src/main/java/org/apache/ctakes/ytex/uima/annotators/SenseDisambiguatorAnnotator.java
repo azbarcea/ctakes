@@ -37,6 +37,7 @@ import org.apache.ctakes.ytex.kernel.metric.ConceptSimilarityService;
 import org.apache.ctakes.ytex.kernel.metric.ConceptSimilarityService.SimilarityMetricEnum;
 import org.apache.ctakes.ytex.kernel.wsd.WordSenseDisambiguator;
 import org.apache.ctakes.ytex.uima.ApplicationContextHolder;
+import org.apache.log4j.Logger;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -67,6 +68,7 @@ import com.google.common.base.Strings;
  * 
  */
 public class SenseDisambiguatorAnnotator extends JCasAnnotator_ImplBase {
+
 	int windowSize = 50;
 	SimilarityMetricEnum metric = SimilarityMetricEnum.INTRINSIC_PATH;
 	WordSenseDisambiguator wsd;

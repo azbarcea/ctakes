@@ -30,6 +30,7 @@ import org.apache.ctakes.ytex.kernel.dao.ConceptDao;
 import org.apache.ctakes.ytex.kernel.model.ConceptGraph;
 import org.apache.ctakes.ytex.kernel.wsd.WordSenseDisambiguator;
 import org.apache.ctakes.ytex.uima.ApplicationContextHolder;
+import org.apache.log4j.Logger;
 import org.apache.uima.UIMAException;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
@@ -47,7 +48,11 @@ import org.apache.uima.fit.factory.JCasFactory;
 import com.google.common.collect.Lists;
 
 public class SenseDisambiguatorAnnotatorTest {
-	ConceptDao conceptDao;
+
+	static private final Logger LOGGER = Logger.getLogger(SenseDisambiguatorAnnotatorTest.class);
+
+	private ConceptDao conceptDao;
+
 	@Before
 	public void setUp() throws Exception {
 		BeanFactory appCtx = ContextSingletonBeanFactoryLocator
@@ -67,23 +72,16 @@ public class SenseDisambiguatorAnnotatorTest {
 			try {
 				jdbcTemplate.execute("drop table test_concepts");
 			} catch (Exception ignore) {
-
+				LOGGER.warn("couldn't drop table test_concepts", ignore);
 			}
 		}
-		jdbcTemplate
-				.execute("create table test_concepts(parent varchar(20), child varchar(20))");
-		jdbcTemplate
-				.execute("insert into test_concepts values ('root', 'animal')");
-		jdbcTemplate
-				.execute("insert into test_concepts values ('animal', 'vertebrate')");
-		jdbcTemplate
-				.execute("insert into test_concepts values ('vertebrate', 'cat')");
-		jdbcTemplate
-				.execute("insert into test_concepts values ('vertebrate', 'dog')");
-		jdbcTemplate
-				.execute("insert into test_concepts values ('root', 'bacteria')");
-		jdbcTemplate
-				.execute("insert into test_concepts values ('bacteria', 'e coli')");
+		jdbcTemplate.execute("create table test_concepts(parent varchar(20), child varchar(20))");
+		jdbcTemplate.execute("insert into test_concepts values ('root', 'animal')");
+		jdbcTemplate.execute("insert into test_concepts values ('animal', 'vertebrate')");
+		jdbcTemplate.execute("insert into test_concepts values ('vertebrate', 'cat')");
+		jdbcTemplate.execute("insert into test_concepts values ('vertebrate', 'dog')");
+		jdbcTemplate.execute("insert into test_concepts values ('root', 'bacteria')");
+		jdbcTemplate.execute("insert into test_concepts values ('bacteria', 'e coli')");
 		conceptDao.createConceptGraph(null, "test",
 				"select child, parent from test_concepts", true,
 				Collections.EMPTY_SET);

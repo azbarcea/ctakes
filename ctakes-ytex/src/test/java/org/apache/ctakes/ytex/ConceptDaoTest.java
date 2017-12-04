@@ -18,13 +18,6 @@
  */
 package org.apache.ctakes.ytex;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Properties;
-
-import javax.sql.DataSource;
-
 import org.apache.ctakes.ytex.kernel.SimSvcContextHolder;
 import org.apache.ctakes.ytex.kernel.dao.ConceptDao;
 import org.apache.ctakes.ytex.kernel.metric.ConceptPairSimilarity;
@@ -34,41 +27,50 @@ import org.apache.ctakes.ytex.kernel.model.ConceptGraph;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
-
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.access.ContextSingletonBeanFactoryLocator;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import static org.junit.Assert.*;
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Properties;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class ConceptDaoTest {
-	ConceptDao conceptDao;
-	ApplicationContext appCtx;
 
 	static private final Logger LOGGER = Logger.getLogger(ConceptDaoTest.class);
 
+	private ConceptDao conceptDao = null;
+
+	private BeanFactory appCtx = null;
+
 	@Before
 	public void setUp() throws Exception {
-		appCtx = (ApplicationContext) ContextSingletonBeanFactoryLocator
-				.getInstance("classpath*:org/apache/ctakes/ytex/kernelBeanRefContext.xml")
+		appCtx = ContextSingletonBeanFactoryLocator
+				.getInstance("classpath*:/org/apache/ctakes/ytex/kernelBeanRefContext.xml")
 				.useBeanFactory("kernelApplicationContext").getFactory();
+
 		conceptDao = appCtx.getBean(ConceptDao.class);
+
 		JdbcTemplate jdbcTemplate = new JdbcTemplate();
 		jdbcTemplate.setDataSource(appCtx.getBean(DataSource.class));
-		Properties ytexProperties = (Properties) appCtx
-				.getBean("ytexProperties");
+		Properties ytexProperties = (Properties)appCtx.getBean("ytexProperties");
 		String dbtype = ytexProperties.getProperty("db.type");
-		if ("hsql".equals(dbtype) || "mysql".equals(dbtype))
+		if("hsql".equals(dbtype) || "mysql".equals(dbtype))
 			jdbcTemplate.execute("drop table if exists test_concepts");
-		if ("mssql".equals(dbtype))
+		if("mssql".equals(dbtype))
 			jdbcTemplate.execute("if exists(select * from sys.objects where object_id = object_id('test_concepts')) drop table test_concepts");
 		if ("orcl".equals(dbtype)) {
 			// just try dropping the table, catch exception and hope all is well
 			try {
 				jdbcTemplate.execute("drop table test_concepts");
 			} catch (Exception ignore) {
-
+				LOGGER.warn("couldn't drop table test_concepts", ignore);
 			}
 		}
 		jdbcTemplate.execute("create table test_concepts(parent varchar(20), child varchar(20))");

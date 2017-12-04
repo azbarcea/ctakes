@@ -20,12 +20,16 @@ package org.apache.ctakes.ytex.umls.dao;
 
 import java.util.List;
 
+import org.apache.ctakes.core.ae.UmlsEnvironmentConfiguration;
+import org.apache.ctakes.utils.env.EnvironmentVariable;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.access.ContextSingletonBeanFactoryLocator;
+
+import static org.junit.Assume.assumeTrue;
 
 /**
  * this test only works if MRCONSO is in the database (not the case for default
@@ -41,6 +45,8 @@ public class UMLSDaoTest {
 
 	@Before
 	public void setUp() throws Exception {
+		assumeTrue( hasUMLSCredentials() );
+
 		ApplicationContext appCtx = (ApplicationContext) ContextSingletonBeanFactoryLocator
 				.getInstance("classpath*:org/apache/ctakes/ytex/kernelBeanRefContext.xml")
 				.useBeanFactory("kernelApplicationContext").getFactory();
@@ -59,6 +65,11 @@ public class UMLSDaoTest {
 		} catch (Exception e) {
 			log.warn("sql exception - mrconso probably doesn't exist, check error", e);
 		}
+	}
+
+	// TODO: move this implementation into a Base class: *UmlsTestBase or something like that (avoid duplication)
+	private static final Boolean hasUMLSCredentials() {
+		return EnvironmentVariable.getEnv(UmlsEnvironmentConfiguration.USER.toString()) != null;
 	}
 
 }
